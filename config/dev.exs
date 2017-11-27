@@ -51,7 +51,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :ex_gridhook, ExGridhook.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "tomas",
+  username: System.get_env("DB_USER") || System.get_env("USER"),
   password: "",
   database: "ex_gridhook_dev",
   hostname: "localhost",

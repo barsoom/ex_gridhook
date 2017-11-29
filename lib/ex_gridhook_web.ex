@@ -22,24 +22,6 @@ defmodule ExGridhookWeb do
       use Phoenix.Controller, namespace: ExGridhookWeb
       import Plug.Conn
       import ExGridhookWeb.Router.Helpers
-      import ExGridhookWeb.Gettext
-    end
-  end
-
-  def view do
-    quote do
-      use Phoenix.View, root: "lib/ex_gridhook_web/templates",
-                        namespace: ExGridhookWeb
-
-      # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
-
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
-      import ExGridhookWeb.Router.Helpers
-      import ExGridhookWeb.ErrorHelpers
-      import ExGridhookWeb.Gettext
     end
   end
 

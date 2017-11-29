@@ -14,13 +14,15 @@ defmodule ExGridhookWeb.Router do
   end
 
   scope "/", ExGridhookWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", RootsController, :index
+    get "/revision",RootsController, :revision
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ExGridhookWeb do
-  #   pipe_through :api
-  # end
+  scope "/events", ExGridhookWeb do
+    pipe_through :api
+
+    post "/events", EventsController, :create
+  end
 end

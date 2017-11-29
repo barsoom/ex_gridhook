@@ -2,6 +2,12 @@
 
 ExGridhook is an app to recieve and persist sendgrid webhook events.
 
+## Endpoints
+
+* "/" shows a friendly message.
+* "/revision" returns the current git revison of the app.
+* …
+
 ## TODO
 
 * [ ]

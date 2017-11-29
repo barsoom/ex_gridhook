@@ -1,4 +1,4 @@
-defmodule ExGridhookWeb.RootsController do
+defmodule ExGridhookWeb.RootController do
   use ExGridhookWeb, :controller
 
   def index(conn, _params) do

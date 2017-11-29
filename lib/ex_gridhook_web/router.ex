@@ -16,13 +16,13 @@ defmodule ExGridhookWeb.Router do
   scope "/", ExGridhookWeb do
     pipe_through :browser
 
-    get "/", RootsController, :index
-    get "/revision",RootsController, :revision
+    get "/", RootController, :index
+    get "/revision",RootController, :revision
   end
 
   scope "/events", ExGridhookWeb do
     pipe_through :api
 
-    post "/events", EventsController, :create
+    post "/events", EventController, :create
   end
 end

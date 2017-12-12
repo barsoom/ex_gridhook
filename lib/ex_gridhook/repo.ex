@@ -8,4 +8,8 @@ defmodule ExGridhook.Repo do
   def init(_, opts) do
     {:ok, Keyword.put(opts, :url, System.get_env("DATABASE_URL"))}
   end
+
+  def count(schema) do
+    aggregate(schema, :count, :id)
+  end
 end

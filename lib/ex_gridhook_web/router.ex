@@ -23,6 +23,6 @@ defmodule ExGridhookWeb.Router do
   scope "/events", ExGridhookWeb do
     pipe_through :api
 
-    post "/events", EventController, :create
+    resources "/", EventController, only: [:create]
   end
 end

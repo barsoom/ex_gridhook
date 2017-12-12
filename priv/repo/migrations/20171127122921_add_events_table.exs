@@ -7,12 +7,11 @@ defmodule ExGridhook.Repo.Migrations.AddEventsTable do
       add :name, :string
       add :category, :text
       add :data, :text
-      add :happened_at, :datetime
+      add :happened_at, :utc_datetime
       add :unique_args, :text
       add :mailer_action, :string
 
       timestamps(inserted_at: :created_at)
-
     end
 
     create index(:events, [:email])

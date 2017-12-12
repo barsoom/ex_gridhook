@@ -10,10 +10,17 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
 config :logger, level: :warn
 
 # Configure your database
+{username, port, password} = if System.get_env("DEVBOX") do
+  {"postgres", elem(System.cmd("service_port", ["postgres"]), 0), "dev"}
+  else
+    {System.get_env("DB_USER") || System.get_env("USER"), "5432", ""}
+  end
+
 config :ex_gridhook, ExGridhook.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: System.get_env("DB_USER") || System.get_env("USER"),
-  password: "",
+  username: username,
+  password: password,
+  port: port,
   database: "ex_gridhook_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

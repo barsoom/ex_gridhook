@@ -10,19 +10,10 @@ ExGridhook is an app to recieve and persist sendgrid webhook events.
 
 ## TODO
 
-* [ ]
-* [ ]
-* [ ]
-* [ ]
-* [ ]
-* [ ]
-* [ ]
-* [ ]
-* [ ]
-* [ ]
-* [ ]
-* [ ]
+* [ ] Complete tests for event.ex
+* [ ] Deploy to heroku
 * [ ] Prevent duplication
+* [ ] …
 
 ## Development
 

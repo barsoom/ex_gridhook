@@ -12,6 +12,8 @@ config :logger, level: :warn
 # Configure your database
 {username, port, password} = if System.get_env("DEVBOX") do
   {"postgres", elem(System.cmd("service_port", ["postgres"]), 0), "dev"}
+  else if System.get_env("CIRCLECI") do
+    {"ubuntu", "5432", ""}
   else
     {System.get_env("DB_USER") || System.get_env("USER"), "5432", ""}
   end

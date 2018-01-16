@@ -13,3 +13,4 @@ jobs:
       - run: mix local.hex --force
       - run: mix deps.get
       - run: mix test
+      - run: script/ci/pipeline.sh deploy "script/ci/deploy.sh $HEROKU_APP_NAME"

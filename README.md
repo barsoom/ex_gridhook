@@ -37,6 +37,18 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
+## Production
+
+**For non Auctionet.com users**
+
+If you want to use this app you should probably fork this repo and change how you persist data.
+
+### Generate secret key base
+
+    mix phoenix.gen.secret
+
+Set `SECRET_KEY_BASE` as an env.
+
 ## Useful links
 
 * https://sendgrid.com/docs/API_Reference/Webhooks/event.html

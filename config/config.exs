@@ -12,7 +12,7 @@ config :ex_gridhook,
 # Configures the endpoint
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "5UYqlV7Wv8SufUN9GDvG++YgjBijdFUxWxPadMqkG+KigAtzi26jOH0R9fYjH2K8",
+  secret_key_base: System.get_env("SECRET_KEY_BASE") || "no secret",
   pubsub: [name: ExGridhook.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

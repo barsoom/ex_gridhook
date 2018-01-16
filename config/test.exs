@@ -15,7 +15,7 @@ config :logger, level: :warn
     {"postgres", elem(System.cmd("service_port", ["postgres"]), 0), "dev", "ex_gridhook_test"}
   System.get_env("CIRCLECI") ->
     {"ubuntu", "5432", "", "circle_test"}
-  _ ->
+  true ->
     {System.get_env("DB_USER") || System.get_env("USER"), "5432", "", "ex_gridhook_test"}
   end
 

@@ -13,11 +13,11 @@ defmodule ExGridhookWeb.RootControllerTest do
   end
 
   test "GET /revision with ENV set" do
-    System.put_env("GIT_COMMIT", "12345")
+    System.put_env("HEROKU_SLUG_COMMIT", "12345")
 
     conn = get(build_conn(), "/revision")
     assert response(conn, 200) == "12345"
 
-    System.delete_env("GIT_COMMIT")
+    System.delete_env("HEROKU_SLUG_COMMIT")
   end
 end

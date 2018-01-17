@@ -50,4 +50,5 @@ Heroku build packs needed:
 
 ## Useful links
 
-* https://sendgrid.com/docs/API_Reference/Webhooks/event.html
+* [Sendgrid event webhooks docs](https://sendgrid.com/docs/API_Reference/Webhooks/event.html)
+* [Basic Auth repo](https://github.com/CultivateHQ/basic_auth)

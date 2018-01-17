@@ -29,14 +29,13 @@ jobs:
 
 workflows:
   version: 2
-
   test_and_deploy:
     jobs:
       - build
       - test:
-        requires:
-          - build
+          requires:
+            - build
       - deploy:
-        requires:
-          - build
-          - test
+          requires:
+            - build
+            - test

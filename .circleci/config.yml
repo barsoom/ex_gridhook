@@ -1,4 +1,4 @@
-version: 2.0
+version: 2
 jobs:
   build:
     working_directory: ~/ex_gridhook
@@ -28,7 +28,7 @@ jobs:
       - run: script/ci/pipeline.sh deploy "script/ci/deploy.sh $HEROKU_APP_NAME"
 
 workflows:
-  version: 2.0
+  version: 2
 
   test_and_deploy:
     jobs:

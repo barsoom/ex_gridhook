@@ -2,6 +2,14 @@
 
 set -e
 
+# Add heroku cli if missing
+if [ ! -x heroku ]; then
+  wget https://cli-assets.heroku.com/branches/stable/heroku-linux-amd64.tar.gz
+  sudo mkdir -p /usr/local/lib /usr/local/bin
+  sudo tar -xvzf heroku-linux-amd64.tar.gz -C /usr/local/lib
+  sudo ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+fi
+
 # Add config for heroku commands and git based deploy over https
 echo -e "machine api.heroku.com\n  login $HEROKU_API_USER\n  password $HEROKU_API_TOKEN\nmachine code.heroku.com\n  login $HEROKU_API_USER\n  password $HEROKU_API_TOKEN\nmachine git.heroku.com\n  login $HEROKU_API_USER\n  password $HEROKU_API_TOKEN" > ~/.netrc
 chmod 0600 ~/.netrc

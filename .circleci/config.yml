@@ -2,6 +2,7 @@ version: 2.0
 jobs:
   build:
     working_directory: ~/ex_gridhook
+    steps:
       - type: checkout
   test:
     working_directory: ~/ex_gridhook

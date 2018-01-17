@@ -28,3 +28,10 @@ config :ex_gridhook, ExGridhook.Repo,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
+
+# Configure Basic Auth
+config :ex_gridhook, basic_auth_config: [
+  username: System.get_env("BASIC_AUTH_USERNAME"),
+  password: System.get_env("BASIC_AUTH_PASSWORD"),
+  realm:    "ex_gridhook"
+]

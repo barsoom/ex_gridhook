@@ -1,6 +1,8 @@
 defmodule ExGridhookWeb.EventController do
   use ExGridhookWeb, :controller
 
+  plug BasicAuth, use_config: {:ex_gridhook, :basic_auth_config}
+
   def create(conn, %{"params" => params}) do
     params
     |> extract_payload

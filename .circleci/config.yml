@@ -2,6 +2,8 @@ version: 2.0
 jobs:
   build:
     working_directory: ~/ex_gridhook
+    docker:
+      - image: circleci/ruby:2.5.0
     steps:
       - type: checkout
   test:

@@ -22,6 +22,13 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Configure Basic Auth
+config :ex_gridhook, basic_auth_config: [
+  username: System.get_env("BASIC_AUTH_USERNAME"),
+  password: System.get_env("BASIC_AUTH_PASSWORD"),
+  realm:    "ex_gridhook"
+]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

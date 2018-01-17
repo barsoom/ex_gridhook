@@ -4,10 +4,16 @@ defmodule ExGridhookWeb.EventControllerTest do
   alias ExGridhook.Repo
 
   test "POST /events" do
+    Application.put_env(:ex_gridhook, :basic_auth_config, [ username: "foo", password: "baz" ])
+
+    header_content = "Basic " <> Base.encode64("foo:baz")
     conn = build_conn()
+      |> put_req_header("authorization", header_content)
       |> post("/events", [ params: sendgrid_webhook_payload() ])
     assert response(conn, 200) == ""
     assert Repo.count(Event) == 3
+
+    Application.delete_env(:ex_gridhook, :basic_auth_config)
   end
 
   defp sendgrid_webhook_payload do

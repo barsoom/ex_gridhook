@@ -1,5 +1,8 @@
 version: 2.0
 jobs:
+  build:
+    working_directory: ~/ex_gridhook
+      - type: checkout
   test:
     working_directory: ~/ex_gridhook
     docker:
@@ -8,7 +11,6 @@ jobs:
         environment:
           - POSTGRES_USER=ubuntu
     steps:
-      - type: checkout
       - run: mix local.rebar --force
       - run: mix local.hex --force
       - run: mix deps.get

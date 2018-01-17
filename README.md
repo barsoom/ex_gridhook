@@ -14,6 +14,7 @@ ExGridhook is an app to recieve and persist sendgrid webhook events.
 * [x] Configure CircleCI
 * [x] Deploy to heroku
 * [ ] Prevent duplication
+* [ ] Update this file with steps on how to deploy to heroku.
 * [ ] …
 
 ## Development
@@ -40,6 +41,12 @@ If you want to use this app you should probably fork this repo and change how yo
     mix phoenix.gen.secret
 
 Set `SECRET_KEY_BASE` as an env.
+
+Heroku build packs needed:
+
+    https://github.com/barsoom/heroku-buildpack-shell-tools.git
+    https://github.com/HashNuke/heroku-buildpack-elixir
+    https://github.com/gjaldon/phoenix-static-buildpack
 
 ## Useful links
 

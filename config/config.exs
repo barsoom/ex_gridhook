@@ -13,6 +13,7 @@ config :ex_gridhook,
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: System.get_env("SECRET_KEY_BASE") || "no secret",
+  render_errors: [view: ExGridhookWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: ExGridhook.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

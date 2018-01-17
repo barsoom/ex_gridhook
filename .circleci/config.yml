@@ -6,6 +6,7 @@ jobs:
       - image: circleci/ruby:2.5.0
     steps:
       - type: checkout
+
   test:
     working_directory: ~/ex_gridhook
     docker:
@@ -18,9 +19,24 @@ jobs:
       - run: mix local.hex --force
       - run: mix deps.get
       - run: mix test
+
   deploy:
     working_directory: ~/ex_gridhook
     docker:
       - image: circleci/ruby:2.5.0
     steps:
       - run: script/ci/pipeline.sh deploy "script/ci/deploy.sh $HEROKU_APP_NAME"
+
+workflows:
+  version: 2.0
+
+  test_and_deploy:
+    jobs:
+      - build
+      - test:
+        requires:
+          - build
+      - deploy:
+        requires:
+          - build
+          - test

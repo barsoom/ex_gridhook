@@ -6,6 +6,6 @@ defmodule ExGridhookWeb.RootController do
   end
 
   def revision(conn, _params) do
-    send_resp(conn, 200, System.get_env("GIT_COMMIT") || "no revision is set.")
+    send_resp(conn, 200, System.get_env("HEROKU_SLUG_COMMIT") || "no revision is set.")
   end
 end

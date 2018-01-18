@@ -10,6 +10,7 @@ defmodule ExGridhookWeb.Router do
   end
 
   pipeline :api do
+    plug :accepts, ["json"]
   end
 
   scope "/", ExGridhookWeb do

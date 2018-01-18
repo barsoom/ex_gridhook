@@ -6,6 +6,6 @@ defmodule ExGridhook.EventsData do
   schema "events_data" do
     field :total_events, :integer
 
-    timestamps
+    timestamps()
   end
 end

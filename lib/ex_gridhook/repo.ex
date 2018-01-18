@@ -12,4 +12,8 @@ defmodule ExGridhook.Repo do
   def count(schema) do
     aggregate(schema, :count, :id)
   end
+
+  def first(schema) do
+    get(schema, 1)
+  end
 end

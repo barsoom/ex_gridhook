@@ -1,6 +1,8 @@
 defmodule ExGridhook.Event do
   use Ecto.Schema
+  import Ecto.Query
   alias ExGridhook.Event
+  alias ExGridhook.EventsData
   alias ExGridhook.Repo
 
   schema "events" do
@@ -33,6 +35,7 @@ defmodule ExGridhook.Event do
 
     %Event{email: email, name: event, category: category, happened_at: to_date_time(happened_at), data: data, unique_args: unique_args, mailer_action: mailer_action(category)}
     |> Repo.insert()
+    |> update_event_count
   end
 
   def create_all(events_attributes \\ %{}) do
@@ -40,6 +43,14 @@ defmodule ExGridhook.Event do
     |> Enum.map(&create/1)
     |> Enum.all?(fn ({status, _event}) -> status == :ok end)
     |> respond_to_create_all
+  end
+
+  defp update_event_count(event_create_results) do
+    from(e in EventsData, update: [set: [total_events: fragment("COALESCE(\"total_events\", 0) + 1")]])
+    |> Repo.update_all([])
+    |> IO.inspect
+
+    event_create_results
   end
 
   defp respond_to_create_all(true), do: :ok

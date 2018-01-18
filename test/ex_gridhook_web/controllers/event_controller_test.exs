@@ -51,6 +51,5 @@ defmodule ExGridhookWeb.EventControllerTest do
         "category" => ["category1", "category2"]
       }
     ]
-    |> Poison.encode!
   end
 end

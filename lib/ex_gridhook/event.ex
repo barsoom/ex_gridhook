@@ -45,7 +45,6 @@ defmodule ExGridhook.Event do
   defp update_event_count(event_create_results) do
     from(e in EventsData, update: [set: [total_events: fragment("COALESCE(\"total_events\", 0) + 1")]])
     |> Repo.update_all([])
-    |> IO.inspect
 
     event_create_results
   end

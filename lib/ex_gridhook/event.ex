@@ -43,13 +43,13 @@ defmodule ExGridhook.Event do
     |> Ecto.DateTime.cast!
   end
 
+  defp mailer_action(nil), do: nil
   defp mailer_action(categories) when is_list(categories) do
     categories
     |> Enum.filter(&mailer_action/1)
     |> Enum.map(&mailer_action/1)
     |> List.first
   end
-
   defp mailer_action(categories) do
     if String.contains?(categories, "#") do
       categories

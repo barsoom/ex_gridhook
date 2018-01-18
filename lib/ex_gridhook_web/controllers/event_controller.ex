@@ -3,7 +3,7 @@ defmodule ExGridhookWeb.EventController do
 
   plug BasicAuth, use_config: {:ex_gridhook, :basic_auth_config}
 
-  def create(conn, %{"params" => params}) do
+  def create(conn, %{"_json" => params}) do
     params
     |> extract_payload
     |> create_events(conn)
@@ -12,7 +12,6 @@ defmodule ExGridhookWeb.EventController do
   defp extract_payload(params) do
     params
     |> Poison.decode!
-    |> Map.fetch!("_json")
   end
 
   defp create_events(attributes, conn) do

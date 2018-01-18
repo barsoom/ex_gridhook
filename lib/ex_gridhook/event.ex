@@ -26,6 +26,10 @@ defmodule ExGridhook.Event do
       attributes
       |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
       |> Enum.into(%{})
+      |> Map.delete(:category)
+      |> Map.delete(:event)
+      |> Map.delete(:email)
+      |> Map.delete(:timestamp)
 
     %Event{email: email, name: event, category: category, happened_at: to_date_time(happened_at), data: data, unique_args: unique_args, mailer_action: mailer_action(category)}
     |> Repo.insert()

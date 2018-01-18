@@ -16,12 +16,10 @@ defmodule ExGridhook.Event do
   end
 
   def create(attributes \\ %{}) do
-    %{
-      "email" => email,
-      "event" => event,
-      "category" => category,
-      "timestamp" => happened_at
-    } = attributes
+    category = Map.get(attributes, "category")
+    event = Map.get(attributes, "event")
+    email = Map.get(attributes, "email")
+    happened_at = Map.get(attributes, "timestamp")
     known_attributes = ["smtp-id", "attempt", "response", "url", "reason", "type", "status"]
     data = Map.take(attributes, known_attributes)
 

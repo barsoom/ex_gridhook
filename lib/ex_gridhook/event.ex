@@ -9,7 +9,7 @@ defmodule ExGridhook.Event do
     field :category, ExGridhook.YamlType
     field :data, ExGridhook.YamlType
     field :happened_at, :utc_datetime
-    field :unique_args, :string
+    field :unique_args, ExGridhook.YamlType
     field :mailer_action, :string
 
     timestamps(inserted_at: :created_at)
@@ -22,8 +22,12 @@ defmodule ExGridhook.Event do
     happened_at = Map.get(attributes, "timestamp")
     known_attributes = ["smtp-id", "attempt", "response", "url", "reason", "type", "status"]
     data = Map.take(attributes, known_attributes)
+    unique_args =
+      attributes
+      |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
+      |> Enum.into(%{})
 
-    %Event{email: email, name: event, category: category, happened_at: to_date_time(happened_at), data: data, mailer_action: mailer_action(category)}
+    %Event{email: email, name: event, category: category, happened_at: to_date_time(happened_at), data: data, unique_args: unique_args, mailer_action: mailer_action(category)}
     |> Repo.insert()
   end
 

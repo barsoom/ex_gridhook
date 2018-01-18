@@ -27,6 +27,21 @@ defmodule ExGridhook.EventTest do
     assert Repo.first(EventsData).total_events == 1
   end
 
+  test "does not update total events if no event was created" do
+    # Sanity
+    assert Repo.count(EventsData) == 1
+    assert Repo.first(EventsData).total_events == 0
+
+    Event.create_all([])
+
+    # Sanity
+    event = Event |> last |> Repo.one
+    assert Repo.count(Event) == 0
+
+    assert Repo.count(EventsData) == 1
+    assert Repo.first(EventsData).total_events == 0
+  end
+
   defp attributes do
     %{
       "email" => "john.doe@sendgrid.com",

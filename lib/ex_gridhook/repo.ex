@@ -1,5 +1,6 @@
 defmodule ExGridhook.Repo do
   use Ecto.Repo, otp_app: :ex_gridhook
+  import Ecto.Query
 
   @doc """
   Dynamically loads the repository url from the
@@ -14,6 +15,12 @@ defmodule ExGridhook.Repo do
   end
 
   def first(schema) do
-    get(schema, 1)
+    from(x in schema, order_by: [asc: x.id], limit: 1)
+    |> one
+  end
+
+  def last(schema) do
+    from(x in schema, order_by: [desc: x.id], limit: 1)
+    |> one
   end
 end

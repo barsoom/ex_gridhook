@@ -10,7 +10,7 @@ defmodule ExGridhook.EventTest do
 
     Event.create_all([attributes()])
 
-    event = Event |> last |> Repo.one
+    event = Repo.last(Event)
 
     assert Repo.count(Event) == 1
 
@@ -19,7 +19,7 @@ defmodule ExGridhook.EventTest do
     assert event.category == ["category#foo", "category"]
     assert event.data == %{"smtp-id" => "<4FB4041F.6080505@sendgrid.com>"}
     assert event.mailer_action == "category#foo"
-    assert event.unique_args == Map.drop(attributes, ["email", "category", "event", "timestamp"])
+    assert event.unique_args == Map.drop(attributes(), ["email", "category", "event", "timestamp"])
     assert_in_delta(DateTime.to_unix(event.happened_at), 1337197600, 1)
 
     # Make sure we update the total events count.
@@ -35,7 +35,6 @@ defmodule ExGridhook.EventTest do
     Event.create_all([])
 
     # Sanity
-    event = Event |> last |> Repo.one
     assert Repo.count(Event) == 0
 
     assert Repo.count(EventsData) == 1

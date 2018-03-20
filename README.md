@@ -2,19 +2,22 @@
 
 ExGridhook is an app to recieve and persist sendgrid webhook events.
 
+We built this app since our previous solution couldn't handle the amount of event we receive from Sendgrid.
+This app should scale better (we haven't seen any issues so far).
+
 ## Endpoints
 
-* "/" shows a friendly message.
+* "/"         shows a friendly message.
 * "/revision" returns the current git revison of the app.
-* …
+* "/events"   receives sendgrid events and persists them.
 
 ## TODO
 
-* [ ] Complete tests for event.ex
 * [x] Configure CircleCI
 * [x] Deploy to heroku
+* [x] Update this file with steps on how to deploy to heroku.
+* [ ] Complete tests for event.ex
 * [ ] Prevent duplication
-* [ ] Update this file with steps on how to deploy to heroku.
 * [ ] …
 
 ## Development
@@ -32,21 +35,29 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
 
 ## Production
 
+This app deploys to heroku via circleci.
+
+[circleci configuration](.circleci/config.yml).
+
 **For non Auctionet.com users**
 
-If you want to use this app you should probably fork this repo and change how you persist data.
+If you want to use this app you should probably fork this repo and change how you persist data, circleci configuration and so on…
+
+### Basic auth
+
+In order to have some sort of security, this app uses basic auth for the /events endpoint.
+
+    heroku config:set BASIC_AUTH_USERNAME=<username you want to use> BASIC_AUTH_PASSWORD=<password of your choosing>
 
 ### Generate secret key base
 
-    mix phoenix.gen.secret
+    heroku config:set SECRET_KEY_BASE=$(mix phoenix.gen.secret)
 
-Set `SECRET_KEY_BASE` as an env.
+### Heroku build packs
 
-Heroku build packs needed:
-
-    https://github.com/barsoom/heroku-buildpack-shell-tools.git
-    https://github.com/HashNuke/heroku-buildpack-elixir
-    https://github.com/gjaldon/phoenix-static-buildpack
+    heroku buildpacks:add https://github.com/barsoom/heroku-buildpack-shell-tools.git
+    heroku buildpacks:add https://github.com/HashNuke/heroku-buildpack-elixir
+    heroku buildpacks:add https://github.com/gjaldon/phoenix-static-buildpack
 
 ## Useful links
 

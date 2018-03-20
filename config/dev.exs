@@ -7,7 +7,7 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 config :ex_gridhook, ExGridhookWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: System.get_env("PORT") || 4000],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -49,10 +49,21 @@ config :logger, :console, format: "[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
-config :ex_gridhook, ExGridhook.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: System.get_env("DB_USER") || System.get_env("USER"),
-  password: "",
-  database: "ex_gridhook_dev",
-  hostname: "localhost",
-  pool_size: 10
+if System.get_env("DEVBOX") do
+  config :ex_gridhook, ExGridhook.Repo,
+    adapter: Ecto.Adapters.Postgres,
+    username: "postgres",
+    password: "dev",
+    database: "ex_gridhook_dev",
+    hostname: "localhost",
+    port: System.cmd("service_port", ["postgres"]) |> elem(0) |> String.trim,
+    pool_size: 10
+else
+  config :ex_gridhook, ExGridhook.Repo,
+    adapter: Ecto.Adapters.Postgres,
+    username: System.get_env("DB_USER") || System.get_env("USER"),
+    password: "",
+    database: "ex_gridhook_dev",
+    hostname: "localhost",
+    pool_size: 10
+end

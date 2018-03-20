@@ -1,0 +1,9 @@
+# Config file used for internal tools at Auctionet
+
+dependencies:
+  node: "6.11.1"
+
+docker_services:
+  postgres:
+    image: "postgres:9.6.1"
+    options: "-e POSTGRES_PASSWORD=dev --publish 5432 -v $DATABASE_ROOT/ex_gridhook/postgres:/var/lib/postgresql/data"

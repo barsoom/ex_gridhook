@@ -56,7 +56,6 @@ In order to have some sort of security, this app uses basic auth for the /events
 
     heroku buildpacks:add https://github.com/barsoom/heroku-buildpack-shell-tools.git
     heroku buildpacks:add https://github.com/HashNuke/heroku-buildpack-elixir
-    heroku buildpacks:add https://github.com/gjaldon/phoenix-static-buildpack
 
 ## Useful links
 

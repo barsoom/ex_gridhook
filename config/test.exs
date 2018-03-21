@@ -12,7 +12,7 @@ config :logger, level: :warn
 # Configure your database
 {username, port, password, db_name} = cond do
   System.get_env("DEVBOX") ->
-    {"postgres", elem(System.cmd("service_port", ["postgres"]), 0), "dev", "ex_gridhook_test"}
+    {"postgres", System.cmd("service_port", ["postgres"]) |> elem(0) |> String.trim, "dev", "ex_gridhook_test"}
   System.get_env("CIRCLECI") ->
     {"ubuntu", "5432", "", "circle_test"}
   true ->

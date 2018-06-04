@@ -19,7 +19,8 @@ defmodule ExGridhook.EventTest do
     assert event.category == ["category#foo", "category"]
     assert event.data == %{"smtp-id" => "<4FB4041F.6080505@sendgrid.com>"}
     assert event.mailer_action == "category#foo"
-    assert event.unique_args == Map.drop(attributes(), ["email", "category", "event", "timestamp"])
+    assert event.unique_args == Map.drop(attributes(), ["email", "category", "event", "timestamp", "sg_event_id"])
+    assert event.sendgrid_unique_event_id == "sendgrid_internal_event_id"
     assert_in_delta(DateTime.to_unix(event.happened_at), 1337197600, 1)
 
     # Make sure we update the total events count.

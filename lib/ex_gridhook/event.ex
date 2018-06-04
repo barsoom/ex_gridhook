@@ -13,6 +13,7 @@ defmodule ExGridhook.Event do
     field :happened_at, :utc_datetime
     field :unique_args, ExGridhook.YamlType
     field :mailer_action, :string
+    field :sendgrid_unique_event_id, :string
 
     timestamps(inserted_at: :created_at)
   end
@@ -22,15 +23,16 @@ defmodule ExGridhook.Event do
     event = Map.get(attributes, "event")
     email = Map.get(attributes, "email")
     happened_at = Map.get(attributes, "timestamp")
+    sendgrid_unique_event_id = Map.get(attributes, "sg_event_id")
     known_attributes = ["smtp-id", "attempt", "response", "url", "reason", "type", "status"]
     data = Map.take(attributes, known_attributes)
     unique_args =
       attributes
       |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
       |> Enum.into(%{})
-      |> Map.drop([:category, :event, :email, :timestamp])
+      |> Map.drop([:category, :event, :email, :timestamp, :sg_event_id])
 
-    %Event{email: email, name: event, category: category, happened_at: to_date_time(happened_at), data: data, unique_args: unique_args, mailer_action: mailer_action(category)}
+    %Event{email: email, name: event, category: category, happened_at: to_date_time(happened_at), data: data, unique_args: unique_args, mailer_action: mailer_action(category), sendgrid_unique_event_id: sendgrid_unique_event_id}
     |> Repo.insert()
     |> update_event_count
   end

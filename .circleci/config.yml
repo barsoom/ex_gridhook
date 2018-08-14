@@ -14,7 +14,7 @@ jobs:
       - run: mix local.rebar --force
       - run: mix local.hex --force
       - run: mix deps.get
-      - run: mix test
+      - run: script/ci/pipeline.sh tests "script/ci/tests.sh"
 
   deploy:
     working_directory: ~/ex_gridhook

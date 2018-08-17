@@ -16,8 +16,8 @@ This app should scale better (we haven't seen any issues so far).
 * [x] Configure CircleCI
 * [x] Deploy to heroku
 * [x] Update this file with steps on how to deploy to heroku.
-* [ ] Complete tests for event.ex
-* [ ] Prevent duplication
+* [x] Complete tests for event.ex
+* [x] Prevent duplication
 * [ ] …
 
 ## Development

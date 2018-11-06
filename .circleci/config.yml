@@ -3,7 +3,7 @@ jobs:
   test:
     docker:
       # Keep in sync with the version in elixir_buildpack.config
-      - image: circleci/elixir:1.7.2
+      - image: circleci/elixir:1.7.4
 
       - image: postgres:9.6.1
         environment:

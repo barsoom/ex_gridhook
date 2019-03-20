@@ -10,13 +10,17 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
 config :logger, level: :warn
 
 # Configure your database
-{username, port, password, db_name} = cond do
-  System.get_env("DEVBOX") ->
-    {"postgres", System.cmd("service_port", ["postgres"]) |> elem(0) |> String.trim, "dev", "ex_gridhook_test"}
-  System.get_env("CIRCLECI") ->
-    {"ubuntu", "5432", "", "circle_test"}
-  true ->
-    {System.get_env("DB_USER") || System.get_env("USER"), "5432", "", "ex_gridhook_test"}
+{username, port, password, db_name} =
+  cond do
+    System.get_env("DEVBOX") ->
+      {"postgres", System.cmd("service_port", ["postgres"]) |> elem(0) |> String.trim(), "dev",
+       "ex_gridhook_test"}
+
+    System.get_env("CIRCLECI") ->
+      {"ubuntu", "5432", "", "circle_test"}
+
+    true ->
+      {System.get_env("DB_USER") || System.get_env("USER"), "5432", "", "ex_gridhook_test"}
   end
 
 config :ex_gridhook, ExGridhook.Repo,

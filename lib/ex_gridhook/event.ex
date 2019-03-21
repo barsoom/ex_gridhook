@@ -1,6 +1,5 @@
 defmodule ExGridhook.Event do
   use Ecto.Schema
-  import Ecto.Query
   alias ExGridhook.Event
   alias ExGridhook.EventsData
   alias ExGridhook.Repo

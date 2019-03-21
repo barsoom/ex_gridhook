@@ -42,7 +42,8 @@ defmodule ExGridhook.Mixfile do
       {:gettext, "~> 0.11"},
       {:plug_cowboy, "~> 1.0"},
       {:basic_auth, "~> 2.2"},
-      {:yaml_elixir, "~> 1.3.1"}
+      {:yaml_elixir, "~> 1.3.1"},
+      {:git_hooks, "~> 0.2.0", only: :dev, runtime: false}
     ]
   end
 

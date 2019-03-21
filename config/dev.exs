@@ -66,3 +66,20 @@ else
     hostname: "localhost",
     pool_size: 10
 end
+
+# Configure Git hooks
+config :git_hooks,
+  verbose: true,
+  hooks: [
+    pre_commit: [
+      mix_tasks: [
+        "format"
+      ]
+    ],
+    pre_push: [
+      verbose: false,
+      mix_tasks: [
+        "test"
+      ]
+    ]
+  ]

@@ -11,7 +11,7 @@ defmodule ExGridhook.Application do
       # Start the Ecto repository
       supervisor(ExGridhook.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(ExGridhookWeb.Endpoint, []),
+      supervisor(ExGridhookWeb.Endpoint, [])
       # Start your own worker by calling: ExGridhook.Worker.start_link(arg1, arg2, arg3)
       # worker(ExGridhook.Worker, [arg1, arg2, arg3]),
     ]

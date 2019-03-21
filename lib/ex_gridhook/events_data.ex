@@ -4,7 +4,7 @@ defmodule ExGridhook.EventsData do
   alias ExGridhook.Repo
 
   schema "events_data" do
-    field :total_events, :integer
+    field(:total_events, :integer)
 
     timestamps()
   end

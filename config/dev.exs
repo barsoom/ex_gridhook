@@ -55,7 +55,7 @@ if System.get_env("DEVBOX") do
     password: "dev",
     database: "ex_gridhook_dev",
     hostname: "localhost",
-    port: System.cmd("service_port", ["postgres"]) |> elem(0) |> String.trim,
+    port: System.cmd("service_port", ["postgres"]) |> elem(0) |> String.trim(),
     pool_size: 10
 else
   config :ex_gridhook, ExGridhook.Repo,

@@ -14,8 +14,7 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: System.get_env("SECRET_KEY_BASE") || "no secret",
   render_errors: [view: ExGridhookWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: ExGridhook.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: ExGridhook.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -23,12 +22,13 @@ config :logger, :console,
   metadata: [:request_id]
 
 # Configure Basic Auth
-config :ex_gridhook, basic_auth_config: [
-  username: System.get_env("BASIC_AUTH_USERNAME"),
-  password: System.get_env("BASIC_AUTH_PASSWORD"),
-  realm:    "ex_gridhook"
-]
+config :ex_gridhook,
+  basic_auth_config: [
+    username: System.get_env("BASIC_AUTH_USERNAME"),
+    password: System.get_env("BASIC_AUTH_PASSWORD"),
+    realm: "ex_gridhook"
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

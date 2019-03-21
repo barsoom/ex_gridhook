@@ -26,13 +26,13 @@ defmodule ExGridhookWeb.ConnCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(ExGridhook.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(ExGridhook.Repo, {:shared, self()})
     end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
-
 end

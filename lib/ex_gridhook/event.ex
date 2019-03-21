@@ -18,7 +18,7 @@ defmodule ExGridhook.Event do
     timestamps(inserted_at: :created_at)
   end
 
-  def create_changeset(attributes \\ %{}) do
+  def create_event_data(attributes \\ %{}) do
     category = Map.get(attributes, "category")
     event = Map.get(attributes, "event")
     email = Map.get(attributes, "email")
@@ -50,7 +50,7 @@ defmodule ExGridhook.Event do
   end
 
   def create_all(events_attributes \\ %{}) do
-    events = events_attributes |> Enum.map(&create_changeset/1)
+    events = events_attributes |> Enum.map(&create_event_data/1)
 
     Multi.new()
     |> Multi.insert_all(:events, Event, events)

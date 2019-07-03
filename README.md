@@ -57,6 +57,15 @@ In order to have some sort of security, this app uses basic auth for the /events
     heroku buildpacks:add https://github.com/barsoom/heroku-buildpack-shell-tools.git
     heroku buildpacks:add https://github.com/HashNuke/heroku-buildpack-elixir
 
+## Update Erlang/Elixir versions
+
+We use https://github.com/HashNuke/heroku-buildpack-elixir for elixir/erlang support on Heroku.
+
+Edit elixir_buildpack.config and change the version numbers.
+
+You can find supported prebuilt Erlang versions [here](https://github.com/HashNuke/heroku-buildpack-elixir-otp-builds/blob/master/otp-versions).
+Supported Elixr prebuilds versions can be found [here](https://github.com/elixir-lang/elixir/releases).
+
 ## Useful links
 
 * [Sendgrid event webhooks docs](https://sendgrid.com/docs/API_Reference/Webhooks/event.html)

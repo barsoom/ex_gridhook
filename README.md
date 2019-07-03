@@ -64,7 +64,7 @@ We use https://github.com/HashNuke/heroku-buildpack-elixir for elixir/erlang sup
 Edit elixir_buildpack.config and change the version numbers.
 
 You can find supported prebuilt Erlang versions [here](https://github.com/HashNuke/heroku-buildpack-elixir-otp-builds/blob/master/otp-versions).
-Supported Elixr prebuilds versions can be found [here](https://github.com/elixir-lang/elixir/releases).
+Supported Elixir prebuilds versions can be found [here](https://github.com/elixir-lang/elixir/releases).
 
 ## Useful links
 

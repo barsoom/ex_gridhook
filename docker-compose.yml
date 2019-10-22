@@ -1,0 +1,18 @@
+version: "3.4"
+services:
+  app:
+    image: app
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    command: "mix do ecto.create, ecto.migrate, phx.server"
+    depends_on:
+      - postgres
+
+  postgres:
+    # NOTE: If we change this, update all other references too.
+    image: "postgres:9.6.15-alpine"

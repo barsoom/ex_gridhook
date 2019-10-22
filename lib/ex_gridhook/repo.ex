@@ -1,5 +1,8 @@
 defmodule ExGridhook.Repo do
-  use Ecto.Repo, otp_app: :ex_gridhook
+  use Ecto.Repo,
+    otp_app: :ex_gridhook,
+    adapter: Ecto.Adapters.Postgres
+
   import Ecto.Query
 
   @doc """

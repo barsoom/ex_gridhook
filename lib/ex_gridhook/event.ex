@@ -4,6 +4,7 @@ defmodule ExGridhook.Event do
   alias ExGridhook.EventsData
   alias ExGridhook.Repo
   alias Ecto.Multi
+  @timestamps_opts [type: :utc_datetime]
 
   schema "events" do
     field(:email, :string)
@@ -33,7 +34,9 @@ defmodule ExGridhook.Event do
       |> Enum.into(%{})
       |> Map.drop([:category, :event, :email, :timestamp, :sg_event_id])
 
-    creation_time = DateTime.utc_now()
+    creation_time =
+      DateTime.utc_now()
+      |> DateTime.truncate(:second)
 
     %{
       email: email,
@@ -61,7 +64,6 @@ defmodule ExGridhook.Event do
   defp to_date_time(timestamp) do
     timestamp
     |> DateTime.from_unix!()
-    |> Ecto.DateTime.cast!()
   end
 
   defp mailer_action(nil), do: nil

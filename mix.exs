@@ -5,7 +5,7 @@ defmodule ExGridhook.Mixfile do
     [
       app: :ex_gridhook,
       version: "0.0.1",
-      elixir: "~> 1.4",
+      elixir: ">= 0.0.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -33,17 +33,19 @@ defmodule ExGridhook.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.3.0"},
-      {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix_ecto, "~> 3.2"},
+      {:phoenix, ">= 0.0.0"},
+      {:phoenix_pubsub, ">= 0.0.0"},
+      {:phoenix_ecto, ">= 0.0.0"},
+      {:ecto_sql, ">= 0.0.0"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 2.10"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:gettext, "~> 0.11"},
-      {:plug_cowboy, "~> 1.0"},
-      {:basic_auth, "~> 2.2"},
-      {:yaml_elixir, "~> 1.3.1"},
-      {:git_hooks, "~> 0.2.0", only: :dev, runtime: false}
+      {:phoenix_html, ">= 0.0.0"},
+      {:phoenix_live_reload, ">= 0.0.0", only: :dev},
+      {:gettext, ">= 0.0.0"},
+      {:plug_cowboy, ">= 0.0.0"},
+      {:basic_auth, ">= 0.0.0"},
+      {:yaml_elixir, ">= 0.0.0"},
+      {:jason, ">= 0.0.0"},
+      {:git_hooks, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 

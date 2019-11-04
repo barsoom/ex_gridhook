@@ -67,10 +67,9 @@ defmodule ExGridhook.Event do
     |> Repo.transaction()
   end
 
-  defp parse_user_id(%{ "user_id" => user_id, "user_type" => _user_type }), do: user_id
   defp parse_user_id(%{ "user_id" => user_id }), do: String.split(user_id, ":") |> List.last() |> String.to_integer()
   defp parse_user_id(_other), do: nil
-  defp parse_user_type(%{ "user_id" => _user_id, "user_type" => user_type }), do: user_type
+
   defp parse_user_type(%{ "user_id" => user_id }), do: String.split(user_id, ":") |> List.first()
   defp parse_user_type(_other), do: nil
 

@@ -50,20 +50,6 @@ defmodule ExGridhook.EventTest do
     assert Repo.first(EventsData).total_events == 0
   end
 
-  test "can accept a string format for user_id data" do
-    Event.create_all([
-      %{
-        "email" => "john.doe@sendgrid.com",
-        "timestamp" => 1_337_197_600,
-        "user_id" => "Admin:888"
-      }
-    ])
-
-    event = Repo.last(Event)
-    assert event.user_type == "Admin"
-    assert event.user_id == 888
-  end
-
   defp attributes do
     %{
       "email" => "john.doe@sendgrid.com",
@@ -73,8 +59,7 @@ defmodule ExGridhook.EventTest do
       "sg_message_id" => "sendgrid_internal_message_id",
       "event" => "processed",
       "category" => ["category#foo", "category"],
-      "user_type" => "Customer",
-      "user_id" => 123,
+      "user_id" => "Customer:123",
       "other_attribute" => 456
     }
   end

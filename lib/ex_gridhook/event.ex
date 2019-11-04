@@ -27,8 +27,8 @@ defmodule ExGridhook.Event do
     email = Map.get(attributes, "email")
     happened_at = Map.get(attributes, "timestamp")
     sendgrid_unique_event_id = Map.get(attributes, "sg_event_id")
-    user_type = Map.get(attributes, "user_type")
-    user_id = Map.get(attributes, "user_id")
+    user_id = parse_user_id(attributes)
+    user_type = parse_user_type(attributes)
     known_attributes = ["smtp-id", "attempt", "response", "url", "reason", "type", "status"]
     data = Map.take(attributes, known_attributes)
 
@@ -66,6 +66,13 @@ defmodule ExGridhook.Event do
     |> Multi.update_all(:events_data, EventsData, inc: [total_events: Enum.count(events)])
     |> Repo.transaction()
   end
+
+  defp parse_user_id(%{ "user_id" => user_id, "user_type" => _user_type }), do: user_id
+  defp parse_user_id(%{ "user_id" => user_id }), do: String.split(user_id, ":") |> List.last() |> String.to_integer()
+  defp parse_user_id(_other), do: nil
+  defp parse_user_type(%{ "user_id" => _user_id, "user_type" => user_type }), do: user_type
+  defp parse_user_type(%{ "user_id" => user_id }), do: String.split(user_id, ":") |> List.first()
+  defp parse_user_type(_other), do: nil
 
   defp to_date_time(timestamp) do
     timestamp

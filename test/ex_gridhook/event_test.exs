@@ -21,6 +21,7 @@ defmodule ExGridhook.EventTest do
     assert event.mailer_action == "category#foo"
     assert event.user_type == "Customer"
     assert event.user_id == 123
+    assert event.user_identifier == "Customer:123"
 
     assert event.unique_args == %{
       "sg_message_id" => "sendgrid_internal_message_id",

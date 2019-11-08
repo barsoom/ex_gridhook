@@ -15,8 +15,12 @@ defmodule ExGridhook.Event do
     field(:unique_args, ExGridhook.YamlType)
     field(:mailer_action, :string)
     field(:sendgrid_unique_event_id, :string)
+
     field(:user_type, :string)
     field(:user_id, :integer)
+
+    # WIP: Will soon replace user_type and user_id
+    field(:user_identifier, :string)
 
     timestamps(inserted_at: :created_at)
   end
@@ -29,6 +33,7 @@ defmodule ExGridhook.Event do
     sendgrid_unique_event_id = Map.get(attributes, "sg_event_id")
     user_id = parse_user_id(attributes)
     user_type = parse_user_type(attributes)
+    user_identifier = Map.get(attributes, "user_id")
     known_attributes = ["smtp-id", "attempt", "response", "url", "reason", "type", "status"]
     data = Map.take(attributes, known_attributes)
 
@@ -53,6 +58,7 @@ defmodule ExGridhook.Event do
       sendgrid_unique_event_id: sendgrid_unique_event_id,
       user_type: user_type,
       user_id: user_id,
+      user_identifier: user_identifier,
       created_at: creation_time,
       updated_at: creation_time
     }

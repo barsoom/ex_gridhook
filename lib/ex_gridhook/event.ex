@@ -33,7 +33,7 @@ defmodule ExGridhook.Event do
     sendgrid_unique_event_id = Map.get(attributes, "sg_event_id")
     user_id = parse_user_id(attributes)
     user_type = parse_user_type(attributes)
-    user_identifier = Map.get(attributes, "user_id")
+    user_identifier = Map.get(attributes, "user_id") || Map.get(attributes, "user_identifier")
     known_attributes = ["smtp-id", "attempt", "response", "url", "reason", "type", "status"]
     data = Map.take(attributes, known_attributes)
 
@@ -41,7 +41,7 @@ defmodule ExGridhook.Event do
       attributes
       |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
       |> Enum.into(%{})
-      |> Map.drop([:category, :event, :email, :timestamp, :sg_event_id, :user_type, :user_id])
+      |> Map.drop([:category, :event, :email, :timestamp, :sg_event_id, :user_type, :user_id, :user_identifier])
 
     creation_time =
       DateTime.utc_now()

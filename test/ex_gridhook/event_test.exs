@@ -19,8 +19,6 @@ defmodule ExGridhook.EventTest do
     assert event.category == ["category#foo", "category"]
     assert event.data == %{"smtp-id" => "<4FB4041F.6080505@sendgrid.com>"}
     assert event.mailer_action == "category#foo"
-    assert event.user_type == "Customer"
-    assert event.user_id == 123
     assert event.user_identifier == "Customer:123"
 
     assert event.unique_args == %{
@@ -60,7 +58,7 @@ defmodule ExGridhook.EventTest do
       "sg_message_id" => "sendgrid_internal_message_id",
       "event" => "processed",
       "category" => ["category#foo", "category"],
-      "user_id" => "Customer:123",
+      "user_identifier" => "Customer:123",
       "other_attribute" => 456
     }
   end

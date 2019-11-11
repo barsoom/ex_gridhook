@@ -33,6 +33,11 @@ defmodule ExGridhook.EventTest do
     # Make sure we update the total events count.
     assert Repo.count(EventsData) == 1
     assert Repo.first(EventsData).total_events == 1
+
+    # Supports user_id (used by outbound).
+    Event.create_all([attributes() |> Map.delete("user_identifier") |> Map.put("user_id", "Admin:123") ])
+    event = Repo.last(Event)
+    assert event.user_identifier == "Admin:123"
   end
 
   test "does not update total events if no event was created" do

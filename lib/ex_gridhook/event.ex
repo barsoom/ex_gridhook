@@ -31,9 +31,7 @@ defmodule ExGridhook.Event do
     email = Map.get(attributes, "email")
     happened_at = Map.get(attributes, "timestamp")
     sendgrid_unique_event_id = Map.get(attributes, "sg_event_id")
-    user_id = parse_user_id(attributes)
-    user_type = parse_user_type(attributes)
-    user_identifier = Map.get(attributes, "user_id") || Map.get(attributes, "user_identifier")
+    user_identifier = Map.get(attributes, "user_identifier") || Map.get(attributes, "user_id")
     known_attributes = ["smtp-id", "attempt", "response", "url", "reason", "type", "status"]
     data = Map.take(attributes, known_attributes)
 
@@ -56,8 +54,6 @@ defmodule ExGridhook.Event do
       unique_args: unique_args,
       mailer_action: mailer_action(category),
       sendgrid_unique_event_id: sendgrid_unique_event_id,
-      user_type: user_type,
-      user_id: user_id,
       user_identifier: user_identifier,
       created_at: creation_time,
       updated_at: creation_time

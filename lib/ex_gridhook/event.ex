@@ -16,10 +16,6 @@ defmodule ExGridhook.Event do
     field(:mailer_action, :string)
     field(:sendgrid_unique_event_id, :string)
 
-    field(:user_type, :string)
-    field(:user_id, :integer)
-
-    # WIP: Will soon replace user_type and user_id
     field(:user_identifier, :string)
 
     timestamps(inserted_at: :created_at)

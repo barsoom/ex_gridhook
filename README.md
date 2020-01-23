@@ -38,6 +38,8 @@ This app deploys to heroku via circleci.
 
 [circleci configuration](.circleci/config.yml).
 
+Deploys intentionally *do not* run migrations, because [Gridlook](https://github.com/barsoom/gridlook) is responsible for the production database structure. Migrations are only for dev/tests.
+
 **For non Auctionet.com users**
 
 If you want to use this app you should probably fork this repo and change how you persist data, circleci configuration and so on…

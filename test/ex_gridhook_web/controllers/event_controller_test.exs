@@ -16,6 +16,10 @@ defmodule ExGridhookWeb.EventControllerTest do
     assert response(conn, 200) == ""
     assert Repo.count(Event) == 3
 
+    # Make sure these are serialised/deserialised correctly.
+    event = Repo.first(Event)
+    assert event.associated_records == [ "Item:123", "Item:456" ]
+
     Application.delete_env(:ex_gridhook, :basic_auth_config)
   end
 
@@ -28,7 +32,8 @@ defmodule ExGridhookWeb.EventControllerTest do
         "sg_event_id" => "sendgrid_internal_event_id",
         "sg_message_id" => "sendgrid_internal_message_id",
         "event" => "processed",
-        "category" => "category"
+        "category" => "category",
+        "associated_records" => '["Item:123", "Item:456"]'
       },
       %{
         "email" => "john.doe@sendgrid.com",

@@ -15,6 +15,7 @@ defmodule ExGridhook.Event do
     field(:unique_args, ExGridhook.YamlType)
     field(:mailer_action, :string)
     field(:sendgrid_unique_event_id, :string)
+    field(:associated_records, {:array, :string})
 
     field(:user_identifier, :string)
 
@@ -28,6 +29,7 @@ defmodule ExGridhook.Event do
     happened_at = Map.get(attributes, "timestamp")
     sendgrid_unique_event_id = Map.get(attributes, "sg_event_id")
     user_identifier = Map.get(attributes, "user_identifier") || Map.get(attributes, "user_id")
+    associated_records = Map.get(attributes, "associated_records", "[]") |> Jason.decode!
     known_attributes = ["smtp-id", "attempt", "response", "url", "reason", "type", "status"]
     data = Map.take(attributes, known_attributes)
 
@@ -35,7 +37,7 @@ defmodule ExGridhook.Event do
       attributes
       |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
       |> Enum.into(%{})
-      |> Map.drop([:category, :event, :email, :timestamp, :sg_event_id, :user_type, :user_id, :user_identifier])
+      |> Map.drop([:category, :associated_records, :event, :email, :timestamp, :sg_event_id, :user_type, :user_id, :user_identifier])
 
     creation_time =
       DateTime.utc_now()
@@ -48,6 +50,7 @@ defmodule ExGridhook.Event do
       happened_at: to_date_time(happened_at),
       data: data,
       unique_args: unique_args,
+      associated_records: associated_records,
       mailer_action: mailer_action(category),
       sendgrid_unique_event_id: sendgrid_unique_event_id,
       user_identifier: user_identifier,

@@ -6,6 +6,9 @@ defmodule ExGridhook.Application do
   def start(_type, _args) do
     import Supervisor.Spec
 
+    # Start the pubsub
+    {Phoenix.PubSub, [name: ExGridhook.PubSub, adapter: Phoenix.PubSub.PG2]}
+
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository

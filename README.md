@@ -1,5 +1,7 @@
 # ExGridhook
 
+[![CircleCI](https://circleci.com/gh/barsoom/ex_gridhook.svg?style=svg&circle-token=fc0c22ab268d4f8a9a2f9c5aeac964bc815ef5cd)](https://app.circleci.com/pipelines/github/barsoom/ex_gridhook)
+
 ExGridhook is an app to recieve and persist sendgrid webhook events.
 
 We built this app since our previous solution couldn't handle the amount of event we receive from Sendgrid.

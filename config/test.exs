@@ -31,3 +31,8 @@ config :ex_gridhook, ExGridhook.Repo,
   database: "ex_gridhook_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Configure Basic Auth
+config :ex_gridhook, :basic_auth_config,
+  username: "foo",
+  password: "baz"

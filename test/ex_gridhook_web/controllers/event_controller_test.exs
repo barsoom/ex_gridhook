@@ -1,16 +1,17 @@
 defmodule ExGridhookWeb.EventControllerTest do
+  import Plug.BasicAuth
   use ExGridhookWeb.ConnCase
   alias ExGridhook.Event
   alias ExGridhook.Repo
 
   test "POST /events" do
-    Application.put_env(:ex_gridhook, :basic_auth_config, username: "foo", password: "baz")
-
-    header_content = "Basic " <> Base.encode64("foo:baz")
+    [username, password] =
+      Application.get_env(:ex_gridhook, :basic_auth_config)
+      |> Enum.map(fn env -> env |> elem(1) end)
 
     conn =
       build_conn()
-      |> put_req_header("authorization", header_content)
+      |> put_req_header("authorization", encode_basic_auth(username, password))
       |> post("/events", _json: sendgrid_webhook_payload())
 
     assert response(conn, 200) == ""
@@ -18,7 +19,7 @@ defmodule ExGridhookWeb.EventControllerTest do
 
     # Make sure these are serialised/deserialised correctly.
     event = Repo.first(Event)
-    assert event.associated_records == [ "Item:123", "Item:456" ]
+    assert event.associated_records == ["Item:123", "Item:456"]
 
     Application.delete_env(:ex_gridhook, :basic_auth_config)
   end

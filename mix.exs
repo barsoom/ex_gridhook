@@ -42,7 +42,6 @@ defmodule ExGridhook.Mixfile do
       {:phoenix_live_reload, ">= 0.0.0", only: :dev},
       {:gettext, ">= 0.0.0"},
       {:plug_cowboy, ">= 1.0.0"},
-      {:basic_auth, ">= 0.0.0"},
       {:yaml_elixir, ">= 0.0.0"},
       {:jason, ">= 0.0.0"},
       {:git_hooks, ">= 0.0.0", only: :dev, runtime: false}

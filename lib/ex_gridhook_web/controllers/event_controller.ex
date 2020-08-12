@@ -1,7 +1,9 @@
 defmodule ExGridhookWeb.EventController do
+  import Plug.BasicAuth
+
   use ExGridhookWeb, :controller
 
-  plug(BasicAuth, use_config: {:ex_gridhook, :basic_auth_config})
+  plug(:basic_auth, Application.get_env(:ex_gridhook, :basic_auth_config))
 
   def create(conn, %{"_json" => params}) do
     params

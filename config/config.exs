@@ -22,12 +22,9 @@ config :logger, :console,
   metadata: [:request_id]
 
 # Configure Basic Auth
-config :ex_gridhook,
-  basic_auth_config: [
-    username: System.get_env("BASIC_AUTH_USERNAME"),
-    password: System.get_env("BASIC_AUTH_PASSWORD"),
-    realm: "ex_gridhook"
-  ]
+config :ex_gridhook, :basic_auth_config,
+  username: System.get_env("BASIC_AUTH_USERNAME"),
+  password: System.get_env("BASIC_AUTH_PASSWORD")
 
 # Configure Phoenix to use it for JSON encoding
 config :phoenix, :json_library, Jason

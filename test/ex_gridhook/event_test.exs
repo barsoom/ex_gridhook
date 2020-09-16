@@ -43,6 +43,12 @@ defmodule ExGridhook.EventTest do
     assert event.user_identifier == "Admin:123"
   end
 
+  test "does not store campaign events" do
+    Event.create_all([Map.put(attributes(), "campaign_id", "123")])
+
+    assert Repo.count(Event) == 0
+  end
+
   test "does not update total events if no event was created" do
     # Sanity
     assert Repo.count(EventsData) == 1

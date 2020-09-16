@@ -22,10 +22,10 @@ defmodule ExGridhook.EventTest do
     assert event.user_identifier == "Customer:123"
 
     assert event.unique_args == %{
-      "sg_message_id" => "sendgrid_internal_message_id",
-      "smtp-id" => "<4FB4041F.6080505@sendgrid.com>",
-      "other_attribute" => 456
-    }
+             "sg_message_id" => "sendgrid_internal_message_id",
+             "smtp-id" => "<4FB4041F.6080505@sendgrid.com>",
+             "other_attribute" => 456
+           }
 
     assert event.sendgrid_unique_event_id == "sendgrid_internal_event_id"
     assert_in_delta(DateTime.to_unix(event.happened_at), 1_337_197_600, 1)
@@ -35,7 +35,10 @@ defmodule ExGridhook.EventTest do
     assert Repo.first(EventsData).total_events == 1
 
     # Supports user_id (used by outbound).
-    Event.create_all([attributes() |> Map.delete("user_identifier") |> Map.put("user_id", "Admin:123") ])
+    Event.create_all([
+      attributes() |> Map.delete("user_identifier") |> Map.put("user_id", "Admin:123")
+    ])
+
     event = Repo.last(Event)
     assert event.user_identifier == "Admin:123"
   end

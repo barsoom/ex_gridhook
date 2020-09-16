@@ -27,7 +27,6 @@ defmodule ExGridhook.EventTest do
              "other_attribute" => 456
            }
 
-    assert event.sendgrid_unique_event_id == "sendgrid_internal_event_id"
     assert_in_delta(DateTime.to_unix(event.happened_at), 1_337_197_600, 1)
 
     # Make sure we update the total events count.

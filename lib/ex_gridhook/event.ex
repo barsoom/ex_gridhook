@@ -14,7 +14,6 @@ defmodule ExGridhook.Event do
     field(:happened_at, :utc_datetime)
     field(:unique_args, ExGridhook.YamlType)
     field(:mailer_action, :string)
-    field(:sendgrid_unique_event_id, :string)
     field(:associated_records, {:array, :string})
 
     field(:user_identifier, :string)
@@ -27,7 +26,6 @@ defmodule ExGridhook.Event do
     event = Map.get(attributes, "event")
     email = Map.get(attributes, "email")
     happened_at = Map.get(attributes, "timestamp")
-    sendgrid_unique_event_id = Map.get(attributes, "sg_event_id")
     user_identifier = Map.get(attributes, "user_identifier") || Map.get(attributes, "user_id")
     associated_records = Map.get(attributes, "associated_records", "[]") |> Jason.decode!()
     known_attributes = ["smtp-id", "attempt", "response", "url", "reason", "type", "status"]
@@ -62,7 +60,6 @@ defmodule ExGridhook.Event do
       unique_args: unique_args,
       associated_records: associated_records,
       mailer_action: mailer_action(category),
-      sendgrid_unique_event_id: sendgrid_unique_event_id,
       user_identifier: user_identifier,
       created_at: creation_time,
       updated_at: creation_time

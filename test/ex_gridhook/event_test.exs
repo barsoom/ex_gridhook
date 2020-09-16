@@ -43,8 +43,8 @@ defmodule ExGridhook.EventTest do
     assert event.user_identifier == "Admin:123"
   end
 
-  test "does not store campaign events" do
-    Event.create_all([Map.put(attributes(), "campaign_id", "123")])
+  test "does not store outbound campaign events" do
+    Event.create_all([Map.merge(attributes(), %{"campaign_id" => "123", "outbound_id" => "321"})])
 
     assert Repo.count(Event) == 0
   end

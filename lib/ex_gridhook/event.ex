@@ -72,7 +72,7 @@ defmodule ExGridhook.Event do
   def create_all(events_attributes \\ %{}) do
     events =
       events_attributes
-      |> Enum.reject(&Map.has_key?(&1, "campaign_id"))
+      |> Enum.reject(&(Map.has_key?(&1, "campaign_id") && Map.has_key?(&1, "outbound_id")))
       |> Enum.map(&create_event_data/1)
 
     Multi.new()

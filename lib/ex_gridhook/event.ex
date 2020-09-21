@@ -35,17 +35,19 @@ defmodule ExGridhook.Event do
       attributes
       |> Enum.map(fn {k, v} -> {String.to_atom(k), v} end)
       |> Enum.into(%{})
-      |> Map.drop([
-        :category,
-        :associated_records,
-        :event,
-        :email,
-        :timestamp,
-        :sg_event_id,
-        :user_type,
-        :user_id,
-        :user_identifier
-      ])
+      |> Map.drop(
+        [
+          :category,
+          :associated_records,
+          :event,
+          :email,
+          :timestamp,
+          :sg_event_id,
+          :user_type,
+          :user_id,
+          :user_identifier
+        ] ++ unique_args_not_to_store
+      )
 
     creation_time =
       DateTime.utc_now()
@@ -106,5 +108,17 @@ defmodule ExGridhook.Event do
     else
       nil
     end
+  end
+
+  # We remove some of the meta data that isn't really useful and since we want to limit db size.
+  defp unique_args_not_to_store do
+    [
+      :environment,
+      :sg_message_id,
+      :"smtp-id",
+      :tls,
+      :url,
+      :url_offset
+    ]
   end
 end

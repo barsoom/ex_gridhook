@@ -22,8 +22,6 @@ defmodule ExGridhook.EventTest do
     assert event.user_identifier == "Customer:123"
 
     assert event.unique_args == %{
-             "sg_message_id" => "sendgrid_internal_message_id",
-             "smtp-id" => "<4FB4041F.6080505@sendgrid.com>",
              "other_attribute" => 456
            }
 
@@ -43,9 +41,30 @@ defmodule ExGridhook.EventTest do
   end
 
   test "does not store outbound campaign events" do
-    Event.create_all([Map.merge(attributes(), %{"campaign_id" => "123", "outbound_id" => "321"})])
+    Event.create_all([
+      Map.merge(
+        attributes(),
+        %{
+          "environment" => "production",
+          "ip" => "172.254.122.68",
+          "sg_message_id" => "Na0_YttnRuaWftP_6sPMvg.filter0p1iad2-4598-5F68A5D2-22.0-12",
+          "smtp-id" =>
+            "<k5f68a5d2be79_43fa7aa45fd3041493@4e712b26-042a-4855-9c92-e6656a788c53.mail>",
+          "tls" => 1
+        }
+      )
+    ])
 
-    assert Repo.count(Event) == 0
+    event = Repo.last(Event)
+
+    assert event.unique_args == %{
+             "other_attribute" => 456,
+             "ip" => "172.254.122.68"
+           }
+  end
+
+  test "does not store some meta data as unique arguments" do
+    Event.create_all([attributes()])
   end
 
   test "does not update total events if no event was created" do

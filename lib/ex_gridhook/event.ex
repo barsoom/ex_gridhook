@@ -46,7 +46,9 @@ defmodule ExGridhook.Event do
           :user_type,
           :user_id,
           :user_identifier
-        ] ++ unique_args_not_to_store
+        ] ++
+          Enum.map(known_attributes, &String.to_atom/1) ++
+          unique_args_not_to_store
       )
 
     creation_time =
@@ -115,7 +117,6 @@ defmodule ExGridhook.Event do
     [
       :environment,
       :sg_message_id,
-      :"smtp-id",
       :tls,
       :url,
       :url_offset

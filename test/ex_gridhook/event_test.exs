@@ -41,6 +41,14 @@ defmodule ExGridhook.EventTest do
   end
 
   test "does not store outbound campaign events" do
+    Event.create_all([Map.merge(attributes(), %{"campaign_id" => "123", "outbound_id" => "321"})])
+    assert Repo.count(Event) == 0
+
+    assert Repo.count(EventsData) == 1
+    assert Repo.first(EventsData).total_events == 0
+  end
+
+  test "does not store some meta data as unique arguments" do
     Event.create_all([
       Map.merge(
         attributes(),
@@ -50,7 +58,9 @@ defmodule ExGridhook.EventTest do
           "sg_message_id" => "Na0_YttnRuaWftP_6sPMvg.filter0p1iad2-4598-5F68A5D2-22.0-12",
           "smtp-id" =>
             "<k5f68a5d2be79_43fa7aa45fd3041493@4e712b26-042a-4855-9c92-e6656a788c53.mail>",
-          "tls" => 1
+          "tls" => 1,
+          "url" => "https://example.com/fjupp",
+          "url_offset" => "2"
         }
       )
     ])
@@ -61,10 +71,6 @@ defmodule ExGridhook.EventTest do
              "other_attribute" => 456,
              "ip" => "172.254.122.68"
            }
-  end
-
-  test "does not store some meta data as unique arguments" do
-    Event.create_all([attributes()])
   end
 
   test "does not update total events if no event was created" do

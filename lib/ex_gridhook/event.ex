@@ -48,7 +48,7 @@ defmodule ExGridhook.Event do
           :user_identifier
         ] ++
           Enum.map(known_attributes, &String.to_atom/1) ++
-          unique_args_not_to_store
+          unique_args_not_to_store()
       )
 
     creation_time =

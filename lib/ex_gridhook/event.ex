@@ -82,14 +82,6 @@ defmodule ExGridhook.Event do
     |> Repo.transaction()
   end
 
-  defp parse_user_id(%{"user_id" => user_id}),
-    do: String.split(user_id, ":") |> List.last() |> String.to_integer()
-
-  defp parse_user_id(_other), do: nil
-
-  defp parse_user_type(%{"user_id" => user_id}), do: String.split(user_id, ":") |> List.first()
-  defp parse_user_type(_other), do: nil
-
   defp to_date_time(timestamp) do
     timestamp
     |> DateTime.from_unix!()

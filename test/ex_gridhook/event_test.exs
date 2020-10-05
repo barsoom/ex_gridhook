@@ -22,7 +22,8 @@ defmodule ExGridhook.EventTest do
     assert event.user_identifier == "Customer:123"
 
     assert event.unique_args == %{
-             "other_attribute" => 456
+             "other_attribute" => 456,
+             "sg_message_id" => "sendgrid_internal_message_id"
            }
 
     assert_in_delta(DateTime.to_unix(event.happened_at), 1_337_197_600, 1)
@@ -69,7 +70,8 @@ defmodule ExGridhook.EventTest do
 
     assert event.unique_args == %{
              "other_attribute" => 456,
-             "ip" => "172.254.122.68"
+             "ip" => "172.254.122.68",
+             "sg_message_id" => "Na0_YttnRuaWftP_6sPMvg.filter0p1iad2-4598-5F68A5D2-22.0-12"
            }
   end
 

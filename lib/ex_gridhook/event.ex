@@ -108,7 +108,6 @@ defmodule ExGridhook.Event do
   defp unique_args_not_to_store do
     [
       :environment,
-      :sg_message_id,
       :tls,
       :url,
       :url_offset

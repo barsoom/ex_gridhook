@@ -9,7 +9,7 @@ jobs:
       - image: postgres:9.6.20
         environment:
           - POSTGRES_USER=ubuntu
-          - POSTGRES_HOST_AUTH_METHOD=trust # trust = allow all
+          - POSTGRES_HOST_AUTH_METHOD=trust # trust = allow all https://www.postgresql.org/docs/current/auth-trust.html
 
     steps:
       - checkout:

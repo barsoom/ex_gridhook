@@ -5,7 +5,8 @@ jobs:
       # Keep in sync with the version in elixir_buildpack.config
       - image: circleci/elixir:1.9.2
 
-      - image: postgres:9.6.1
+      # Keep in sync with dev.yml
+      - image: postgres:9.6.20
         environment:
           - POSTGRES_USER=ubuntu
 

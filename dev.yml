@@ -1,8 +1,9 @@
 # Config file used for internal tools at Auctionet
 
 dependencies:
-  node: "8.10.0"
-  checksum: "57ddd302260f77fa6dfe774f97b196828ec7c08aafbbd8def5e527a388d18f2d"
+  node:
+    version: "15.6.0"
+    checksum: "1dd3681e85bb9c8205a331bfac5121050893defb5ad9d04698239aeef4e736b3"
 
 docker_services:
   postgres:

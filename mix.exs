@@ -33,19 +33,19 @@ defmodule ExGridhook.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, ">= 0.0.0"},
-      {:phoenix_pubsub, ">= 2.0.0"},
-      {:phoenix_ecto, ">= 0.0.0"},
+      {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:ecto_sql, ">= 0.0.0"},
-      {:postgrex, ">= 0.0.0"},
+      {:gettext, ">= 0.0.0"},
+      {:git_hooks, ">= 0.0.0", only: :dev, runtime: false},
+      {:jason, ">= 0.0.0"},
+      {:phoenix, ">= 0.0.0"},
+      {:phoenix_ecto, ">= 0.0.0"},
       {:phoenix_html, ">= 0.0.0"},
       {:phoenix_live_reload, ">= 0.0.0", only: :dev},
-      {:gettext, ">= 0.0.0"},
+      {:phoenix_pubsub, ">= 2.0.0"},
       {:plug_cowboy, ">= 1.0.0"},
-      {:yaml_elixir, ">= 0.0.0"},
-      {:jason, ">= 0.0.0"},
-      {:git_hooks, ">= 0.0.0", only: :dev, runtime: false},
-      {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false}
+      {:postgrex, ">= 0.0.0"},
+      {:yaml_elixir, ">= 0.0.0"}
     ]
   end
 

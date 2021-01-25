@@ -2,25 +2,16 @@
 
 [![CircleCI](https://circleci.com/gh/barsoom/ex_gridhook.svg?style=svg&circle-token=fc0c22ab268d4f8a9a2f9c5aeac964bc815ef5cd)](https://app.circleci.com/pipelines/github/barsoom/ex_gridhook)
 
-ExGridhook is an app to recieve and persist sendgrid webhook events.
+ExGridhook is an app to receive and persist SendGrid webhook events.
 
-We built this app since our previous solution couldn't handle the amount of event we receive from Sendgrid.
-This app should scale better (we haven't seen any issues so far).
+We built this app since our previous solution couldn't handle the amount of events we receive from SendGrid.
+This app should scale better. We haven't seen any issues so far.
 
 ## Endpoints
 
 * "/"         shows a friendly message.
 * "/revision" returns the current git revison of the app.
-* "/events"   receives sendgrid events and persists them.
-
-## TODO
-
-* [x] Configure CircleCI
-* [x] Deploy to heroku
-* [x] Update this file with steps on how to deploy to heroku.
-* [x] Complete tests for event.ex
-* [x] Prevent duplication
-* [ ] …
+* "/events"   receives SendGrid events and persists them.
 
 ## Development
 
@@ -28,27 +19,27 @@ To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Start Phoenix endpoint with `mix phx.server`
+  * Start the Phoenix endpoint with `mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+Now you can navigate to [`localhost:4000`](http://localhost:4000).
 
 ## Production
 
-This app deploys to heroku via circleci.
+[Phoenix Framework's "Introduction to Deployment" guide](https://hexdocs.pm/phoenix/deployment.html)
 
-[circleci configuration](.circleci/config.yml).
+This app deploys to Heroku via CircleCI.
+
+[CircleCI configuration](.circleci/config.yml).
 
 Deploys intentionally *do not* run migrations, because [Gridlook](https://github.com/barsoom/gridlook) is responsible for the production database structure. Migrations are only for dev/tests.
 
-**For non Auctionet.com users**
+**For non-Auctionet.com users**
 
-If you want to use this app you should probably fork this repo and change how you persist data, circleci configuration and so on…
+If you want to use this app, you should probably fork this repo and change how you persist data, CircleCI configuration and so on…
 
 ### Basic auth
 
-In order to have some sort of security, this app uses basic auth for the /events endpoint.
+In order to have some sort of security, this app uses basic auth for the `/events` endpoint.
 
     heroku config:set BASIC_AUTH_USERNAME=<username you want to use> BASIC_AUTH_PASSWORD=<password of your choosing>
 
@@ -58,19 +49,18 @@ In order to have some sort of security, this app uses basic auth for the /events
 
 ### Heroku build packs
 
-    heroku buildpacks:add https://github.com/barsoom/heroku-buildpack-shell-tools.git
+    heroku buildpacks:add https://github.com/barsoom/heroku-buildpack-shell-tools
     heroku buildpacks:add https://github.com/HashNuke/heroku-buildpack-elixir
 
 ## Update Erlang/Elixir versions
 
-We use https://github.com/HashNuke/heroku-buildpack-elixir for elixir/erlang support on Heroku.
+We use https://github.com/HashNuke/heroku-buildpack-elixir for Elixir/Erlang support on Heroku.
 
-Edit elixir_buildpack.config and change the version numbers.
+Edit `elixir_buildpack.config` and change the version numbers.
 
-You can find supported prebuilt Erlang versions [here](https://github.com/HashNuke/heroku-buildpack-elixir-otp-builds/blob/master/otp-versions).
-Supported Elixir prebuilds versions can be found [here](https://github.com/elixir-lang/elixir/releases).
+You can find supported prebuilt Erlang versions in the repo [HashNuke/heroku-buildpack-elixir-otp-builds](https://github.com/HashNuke/heroku-buildpack-elixir-otp-builds/blob/master/otp-versions).
+Supported Elixir prebuilds versions can be found [in Elixir's Releases section](https://github.com/elixir-lang/elixir/releases).
 
 ## Useful links
 
-* [Sendgrid event webhooks docs](https://sendgrid.com/docs/API_Reference/Webhooks/event.html)
-* [Basic Auth repo](https://github.com/CultivateHQ/basic_auth)
+* [SendGrid event webhooks docs](https://sendgrid.com/docs/for-developers/tracking-events/event/)

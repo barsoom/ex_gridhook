@@ -4,19 +4,16 @@ defmodule ExGridhook.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
-    import Supervisor.Spec
-
-    # Start the pubsub
-    {Phoenix.PubSub, [name: ExGridhook.PubSub, adapter: Phoenix.PubSub.PG2]}
-
     # Define workers and child supervisors to be supervised
     children = [
+      # Start the pubsub
+      {Phoenix.PubSub, [name: ExGridhook.PubSub, adapter: Phoenix.PubSub.PG2]},
+
       # Start the Ecto repository
-      supervisor(ExGridhook.Repo, []),
+      {ExGridhook.Repo, []},
+
       # Start the endpoint when the application starts
-      supervisor(ExGridhookWeb.Endpoint, [])
-      # Start your own worker by calling: ExGridhook.Worker.start_link(arg1, arg2, arg3)
-      # worker(ExGridhook.Worker, [arg1, arg2, arg3]),
+      {ExGridhookWeb.Endpoint, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

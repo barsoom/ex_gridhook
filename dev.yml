@@ -7,5 +7,5 @@ dependencies:
 
 docker_services:
   postgres:
-    image: "postgres:9.6.20" # keep in sync with .circleci/config.yml
+    image: "postgres:13.2" # keep in sync with .circleci/config.yml
     options: "-e POSTGRES_PASSWORD=dev --publish 5432 -v $DATABASE_ROOT/ex_gridhook/postgres:/var/lib/postgresql/data"

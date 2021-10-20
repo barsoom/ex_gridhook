@@ -2,10 +2,10 @@
 
 dependencies:
   node:
-    version: "15.6.0"
-    checksum: "1dd3681e85bb9c8205a331bfac5121050893defb5ad9d04698239aeef4e736b3"
+    version: "16.11.1"
+    checksum: "8b5a54b284e524984772d34dc2efc68a10fc2f91db11390c6035ef2a9509ef2c"
 
 docker_services:
   postgres:
-    image: "postgres:13.2" # keep in sync with .circleci/config.yml
+    image: "postgres:13.4" # keep in sync with .circleci/config.yml
     options: "-e POSTGRES_PASSWORD=dev --publish 5432 -v $DATABASE_ROOT/ex_gridhook/postgres:/var/lib/postgresql/data"

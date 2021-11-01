@@ -1,10 +1,5 @@
 # Config file used for internal tools at Auctionet
 
-dependencies:
-  node:
-    version: "16.11.1"
-    checksum: "8b5a54b284e524984772d34dc2efc68a10fc2f91db11390c6035ef2a9509ef2c"
-
 docker_services:
   postgres:
     image: "postgres:13.4" # keep in sync with .circleci/config.yml

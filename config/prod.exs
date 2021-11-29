@@ -19,8 +19,7 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-# Do not print debug messages in production
-config :logger, level: :debug
+config :logger, level: System.get_env("LOG_LEVEL") || :info
 
 # Configure the database
 config :ex_gridhook, ExGridhook.Repo,

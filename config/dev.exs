@@ -72,14 +72,14 @@ config :git_hooks,
   verbose: true,
   hooks: [
     pre_commit: [
-      mix_tasks: [
-        "format"
+      tasks: [
+        {:mix_task, :format}
       ]
     ],
     pre_push: [
       verbose: false,
-      mix_tasks: [
-        "test"
+      tasks: [
+        {:mix_task, :test}
       ]
     ]
   ]

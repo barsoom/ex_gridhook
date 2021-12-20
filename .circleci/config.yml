@@ -3,7 +3,7 @@ jobs:
   test:
     docker:
       # Keep in sync with the version in elixir_buildpack.config
-      - image: cimg/elixir:1.13.0
+      - image: cimg/elixir:1.13.1
 
       # Keep in sync with dev.yml
       - image: postgres:13.4

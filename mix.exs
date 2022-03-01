@@ -36,7 +36,6 @@ defmodule ExGridhook.Mixfile do
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:ecto_sql, ">= 0.0.0"},
       {:gettext, ">= 0.0.0"},
-      {:git_hooks, ">= 0.0.0", only: :dev, runtime: false},
       {:jason, ">= 0.0.0"},
       {:phoenix, ">= 0.0.0"},
       {:phoenix_ecto, ">= 0.0.0"},

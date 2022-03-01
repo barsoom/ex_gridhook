@@ -1,4 +1,8 @@
 #!/bin/sh
 
+# Install it by running
+#   ln -fs ../../.githooks/pre-commit .git/hooks/pre-commit
+# or, if you're using devbox, it will be installed when you run `dev`.
+
 echo "Running format pre-commit"
 mix format

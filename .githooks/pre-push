@@ -1,4 +1,8 @@
 #!/bin/sh
 
+# Install it by running
+#   ln -fs ../../.githooks/pre-push .git/hooks/pre-push
+# or, if you're using devbox, it will be installed when you run `dev`.
+
 echo "Running test pre-push"
 mix test

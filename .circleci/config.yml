@@ -45,8 +45,10 @@ workflows:
   version: 2
   test_and_deploy:
     jobs:
-      - test
+      - test:
+          context: pipeline-and-heroku
       - deploy:
+          context: pipeline-and-heroku
           requires:
             - test
           filters:

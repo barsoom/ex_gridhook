@@ -3,7 +3,7 @@ jobs:
   test:
     docker:
       - image: cimg/elixir:1.13.4 # Keep in sync with the version in elixir_buildpack.config
-      - image: postgres:13.4 # Keep in sync with dev.yml
+      - image: postgres:14.4 # Keep in sync with dev.yml
         environment:
           - POSTGRES_USER=ubuntu
           - POSTGRES_HOST_AUTH_METHOD=trust # trust = allow all https://www.postgresql.org/docs/current/auth-trust.html

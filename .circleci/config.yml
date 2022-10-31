@@ -2,7 +2,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: cimg/elixir:1.13.4 # Keep in sync with the version in elixir_buildpack.config
+      - image: cimg/elixir:1.14.1 # Keep in sync with the version in elixir_buildpack.config
       - image: postgres:14.5-alpine # Keep in sync with dev.yml
         environment:
           - POSTGRES_USER=ubuntu

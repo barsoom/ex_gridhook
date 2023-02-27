@@ -37,7 +37,7 @@ defmodule ExGridhook.Mixfile do
       {:ecto_sql, ">= 0.0.0"},
       {:gettext, ">= 0.0.0"},
       {:jason, ">= 0.0.0"},
-      {:phoenix, ">= 0.0.0"},
+      {:phoenix, "< 1.7.0"},
       {:phoenix_ecto, ">= 0.0.0"},
       {:phoenix_html, ">= 0.0.0"},
       {:phoenix_live_reload, ">= 0.0.0", only: :dev},

@@ -11,6 +11,7 @@ defmodule ExGridhookWeb.Router do
 
   pipeline :api do
     plug(:accepts, ["json"])
+    plug(:basic_auth, Application.compile_env(:ex_gridhook, :basic_auth_config))
   end
 
   scope "/", ExGridhookWeb do

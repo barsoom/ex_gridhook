@@ -46,8 +46,8 @@ defmodule ExGridhookWeb do
     quote do
       use Phoenix.Router
       import Plug.Conn
-      import Phoenix.Controller
       import Plug.BasicAuth
+      import Phoenix.Controller
     end
   end
 

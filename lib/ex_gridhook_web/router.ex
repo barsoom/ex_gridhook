@@ -11,7 +11,7 @@ defmodule ExGridhookWeb.Router do
 
   pipeline :api do
     plug(:accepts, ["json"])
-    plug(:basic_auth, Application.compile_env(:ex_gridhook, :basic_auth_config))
+    plug(:authenticate_with_basic_auth)
   end
 
   scope "/", ExGridhookWeb do
@@ -25,5 +25,9 @@ defmodule ExGridhookWeb.Router do
     pipe_through(:api)
 
     resources("/", EventController, only: [:create])
+  end
+
+  defp authenticate_with_basic_auth(conn, _ ) do
+    basic_auth(conn, Application.get_env(:ex_gridhook, :basic_auth_config))
   end
 end

@@ -1,53 +1,87 @@
-version: 2
+version: 2.1
+
+orbs:
+  heroku: circleci/heroku@2.0.0 # https://circleci.com/developer/orbs/orb/circleci/heroku
+
 jobs:
   test:
+    resource_class: medium
     docker:
-      - image: cimg/elixir:1.14.1 # Keep in sync with the version in elixir_buildpack.config
-      - image: postgres:14.5-alpine # Keep in sync with dev.yml
-        environment:
-          - POSTGRES_USER=ubuntu
-          - POSTGRES_HOST_AUTH_METHOD=trust # trust = allow all https://www.postgresql.org/docs/current/auth-trust.html
-
+      - image: cimg/base:stable
     steps:
+      - run:
+          name: "Installing tools"
+          command: sudo apt-get update -q && sudo apt-get install -q -y ruby && sudo apt-get install -q -y bash  && sudo apt-get install -q -y make
+      - setup_remote_docker:
+          docker_layer_caching: true
       - checkout:
           name: "Checking out code"
       - run:
-          name: "Setting up package manager"
-          command: mix local.rebar --force && mix local.hex --force
+          name: "Build test image"
+          command: script/ci/pipeline.sh build_test "script/ci/docker/build_test.sh"
       - run:
-          name: "Getting deps"
-          command: mix deps.get
+          name: "Run linters and code analysis"
+          command: script/ci/pipeline.sh lint "script/ci/docker/lint.sh"
       - run:
-          name: "Compiling code"
-          command: MIX_ENV=test mix compile
-      - run:
-          name: "Running tests"
-          command: script/ci/pipeline.sh tests "script/ci/tests.sh"
+          name: "Run tests"
+          command: script/ci/pipeline.sh test "script/ci/docker/test.sh"
 
-  deploy:
+  prepare_app_image:
     docker:
-      - image: cimg/ruby:3.1 # Latest available Ruby; only used for build scripts
-
+      - image: cimg/base:stable
     steps:
-      - checkout:
-          name: "Checking out code"
       - run:
-          name: "Deploying to production"
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              script/ci/pipeline.sh deploy_production "script/ci/deploy.sh $HEROKU_APP_NAME"
-            fi
+          name: "Installing tools"
+          command: sudo apt-get update -q && sudo apt-get install -q -y ruby && sudo apt-get install -q -y bash  && sudo apt-get install -q -y make
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: "Log in to heroku docker registry"
+          command: echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+      - checkout
+      - run:
+          name: "Build production image"
+          command: script/ci/pipeline.sh build_prod "script/ci/docker/build_prod.sh"
+      - run:
+          name: "Push production image"
+          command: script/ci/pipeline.sh push_production "script/ci/docker/push.sh production"
+      - run: |
+          cp $BASH_ENV bash.env
+      - persist_to_workspace:
+          root: .
+          paths:
+            - bash.env
+
+  deploy_to_production:
+    docker:
+      - image: cimg/ruby:3.2
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: |
+          cat bash.env > $BASH_ENV
+      - run:
+          name: "Release production"
+          command: script/ci/pipeline.sh release_production "script/ci/docker/release.sh production"
 
 workflows:
-  version: 2
-  test_and_deploy:
+  deploy-workflow:
     jobs:
       - test:
           context: shared-config
-      - deploy:
+      - prepare_app_image:
+          context: shared-config
+          filters:
+            branches:
+              only:
+                - master
+      - deploy_to_production:
           context: shared-config
           requires:
             - test
+            - prepare_app_image
           filters:
             branches:
-              only: master
+              only:
+                - master

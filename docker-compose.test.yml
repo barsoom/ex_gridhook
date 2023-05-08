@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  postgres:
+    hostname: postgres
+    image: postgres:14.5-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_PASSWORD: test
+    healthcheck:
+      test: pg_isready
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  app:
+    image: ex_gridhook:test
+    depends_on:
+      - postgres
+    environment:
+      DB_USER: postgres
+
+networks:
+  default:

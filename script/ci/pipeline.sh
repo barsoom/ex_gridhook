@@ -8,6 +8,12 @@ command_to_run=$2
 
 # Shortcut to just run the build command if pipeline is not configured
 if [[ ! -v "PIPELINE_API_TOKEN" ]]; then
+  $command_to_run
+  exit $?
+fi
+
+# Don't report non-master builds
+if [ "${CIRCLE_BRANCH}" != "master" ]; then
   $command_to_run || exit 1
   exit 0
 fi

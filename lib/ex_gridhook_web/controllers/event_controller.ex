@@ -1,7 +1,6 @@
 defmodule ExGridhookWeb.EventController do
   use ExGridhookWeb, :controller
 
-
   def create(conn, %{"_json" => params}) do
     params
     |> create_events(conn)

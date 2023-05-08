@@ -1,4 +1,6 @@
 defmodule ExGridhook.Event do
+  @moduledoc false
+
   use Ecto.Schema
   alias ExGridhook.Event
   alias ExGridhook.EventsData

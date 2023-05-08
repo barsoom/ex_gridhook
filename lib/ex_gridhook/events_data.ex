@@ -1,4 +1,6 @@
 defmodule ExGridhook.EventsData do
+  @moduledoc false
+
   use Ecto.Schema
 
   schema "events_data" do

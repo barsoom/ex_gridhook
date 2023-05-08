@@ -1,4 +1,6 @@
 defmodule ExGridhook.YamlType do
+  @moduledoc false
+
   use Ecto.Type
 
   def type, do: :yaml

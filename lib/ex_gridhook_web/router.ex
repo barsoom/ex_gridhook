@@ -27,7 +27,7 @@ defmodule ExGridhookWeb.Router do
     resources("/", EventController, only: [:create])
   end
 
-  defp authenticate_with_basic_auth(conn, _ ) do
+  defp authenticate_with_basic_auth(conn, _) do
     basic_auth(conn, Application.get_env(:ex_gridhook, :basic_auth_config))
   end
 end

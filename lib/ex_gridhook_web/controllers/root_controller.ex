@@ -8,4 +8,9 @@ defmodule ExGridhookWeb.RootController do
   def revision(conn, _params) do
     send_resp(conn, 200, System.get_env("HEROKU_SLUG_COMMIT") || "no revision is set.")
   end
+
+  def boom(_conn, _params) do
+    # Used to test error reporting.
+    raise "Boom!"
+  end
 end

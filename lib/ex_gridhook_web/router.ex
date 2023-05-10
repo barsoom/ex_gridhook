@@ -20,6 +20,7 @@ defmodule ExGridhookWeb.Router do
 
     get("/", RootController, :index)
     get("/revision", RootController, :revision)
+    get("/boom", RootController, :boom)
   end
 
   scope "/events", ExGridhookWeb do

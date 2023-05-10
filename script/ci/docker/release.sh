@@ -6,7 +6,7 @@ app_name=auctionet-ex-gridhook
 curl -n -X PATCH https://api.heroku.com/apps/$app_name/formation \
   -d "{ \"updates\":
         [
-            { \"type\": \"web\", \"docker_image\": \"$WEB_IMAGE_ID\" },
+            { \"type\": \"web\", \"docker_image\": \"$WEB_IMAGE_ID\" }
         ]
     }" \
   -H "Content-Type: application/json" \

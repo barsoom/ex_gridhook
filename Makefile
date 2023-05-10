@@ -6,8 +6,6 @@ COMMAND ?= `grep 'web' Procfile | cut -d ':' -f2`
 REVISION ?= `git rev-parse HEAD`
 APP_NAME ?= ex_gridhook
 
-.PHONY: app
-
 test-image:
 	DOCKER_BUILDKIT=1 docker build \
 	  --build-arg MIX_ENV=test \
@@ -32,5 +30,5 @@ prod-image:
 		-t ${APP_NAME}:web \
 	  .
 
-run: dev-image
-	docker run -p 48546:48546 -it ${APP_NAME} $(COMMAND)
+run: prod-image
+	docker run -p 48546:48546 -it ${APP_NAME}:web $(COMMAND)

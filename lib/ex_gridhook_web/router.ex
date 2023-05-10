@@ -1,5 +1,6 @@
 defmodule ExGridhookWeb.Router do
   use ExGridhookWeb, :router
+  use Honeybadger.Plug
 
   pipeline :browser do
     plug(:accepts, ["html"])

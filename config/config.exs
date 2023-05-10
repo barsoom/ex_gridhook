@@ -29,6 +29,13 @@ config :ex_gridhook, :basic_auth_config,
 # Configure Phoenix to use it for JSON encoding
 config :phoenix, :json_library, Jason
 
+config :honeybadger,
+  # https://github.com/honeybadger-io/honeybadger-elixir#filtering-sensitive-data
+  filter: Honeybadger.Filter.Default,
+  filter_keys: [:email],
+  api_key: System.get_env("HONEYBADGER_API_KEY"),
+  breadcrumbs_enabled: true
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

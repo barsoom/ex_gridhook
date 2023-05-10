@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-app_name=auctionet-${CIRCLE_PROJECT_REPONAME}
+app_name=auctionet-ex-gridhook
 
 curl -n -X PATCH https://api.heroku.com/apps/$app_name/formation \
   -d "{ \"updates\":

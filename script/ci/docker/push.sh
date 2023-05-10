@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker push registry.heroku.com/auctionet-${CIRCLE_PROJECT_REPONAME}:latest
+docker push registry.heroku.com/auctionet-ex-gridhook/web:latest

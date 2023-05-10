@@ -29,7 +29,7 @@ prod-image:
 		--build-arg REVISION=$(REVISION) \
 	  --progress=plain \
 	  -f Dockerfile \
-		-t ${APP_NAME} \
+		-t ${APP_NAME}:web \
 	  .
 
 run: dev-image

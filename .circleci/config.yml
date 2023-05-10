@@ -44,7 +44,7 @@ jobs:
           command: script/ci/pipeline.sh build_prod "script/ci/docker/build_prod.sh"
       - run:
           name: "Push production image"
-          command: script/ci/pipeline.sh push_production "script/ci/docker/push.sh production"
+          command: script/ci/pipeline.sh push_production "script/ci/docker/push.sh"
       - run: |
           cp $BASH_ENV bash.env
       - persist_to_workspace:
@@ -63,7 +63,7 @@ jobs:
           cat bash.env > $BASH_ENV
       - run:
           name: "Release production"
-          command: script/ci/pipeline.sh release_production "script/ci/docker/release.sh production"
+          command: script/ci/pipeline.sh release_production "script/ci/docker/release.sh"
 
 workflows:
   deploy-workflow:

@@ -1,8 +1,7 @@
 #!/bin/sh
 set -e
 
-stage=$1
-app_name=auctionet-${CIRCLE_PROJECT_REPONAME}-${stage}
+app_name=auctionet-${CIRCLE_PROJECT_REPONAME}
 
 curl -n -X PATCH https://api.heroku.com/apps/$app_name/formation \
   -d "{ \"updates\":

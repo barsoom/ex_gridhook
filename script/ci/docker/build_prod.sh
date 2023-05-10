@@ -3,7 +3,7 @@ set -e
 
 REVISION=$CIRCLE_SHA1 make prod-image
 
-docker tag ${CIRCLE_PROJECT_REPONAME}:web registry.heroku.com/auctionet-${CIRCLE_PROJECT_REPONAME}-production/web:latest
+docker tag ${CIRCLE_PROJECT_REPONAME}:web registry.heroku.com/auctionet-${CIRCLE_PROJECT_REPONAME}/web:latest
 
 web_image_id=`docker inspect ${CIRCLE_PROJECT_REPONAME}:web --format={{.Id}}`
 

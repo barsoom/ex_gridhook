@@ -4,7 +4,7 @@ ALPINE_VERSION ?= `grep 'alpine_version' elixir_buildpack.config | cut -d '=' -f
 
 COMMAND ?= `grep 'web' Procfile | cut -d ':' -f2`
 REVISION ?= `git rev-parse HEAD`
-APP_NAME ?= "ex_gridhook"
+APP_NAME ?= "ex-gridhook"
 
 .PHONY: app
 

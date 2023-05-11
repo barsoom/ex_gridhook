@@ -2,4 +2,4 @@
 
 revision=$(git rev-parse HEAD)
 
-docker push registry.heroku.com/auctionet-ex-gridhook/web:$revision
+docker push registry.heroku.com/auctionet-ex-gridhook/app:$revision

@@ -7,17 +7,24 @@ defmodule ExGridhookWeb.RootController do
 
   def revision(conn, _params) do
     revision =
-      case File.read("/opt/app/built_from_revision") do
+      case File.read("built_from_revision") do
         {:ok, body} -> body
-        {:error, _reason} -> Application.get_env(:ex_gridhook, :revision)
+        {:error, _reason} -> fetch_revision_from_env()
       end
 
-    conn
-    |> send_resp(200, revision)
+
+    send_resp(conn, 200, revision)
   end
 
   def boom(_conn, _params) do
     # Used to test error reporting.
     raise "Boom!"
+  end
+
+  defp fetch_revision_from_env do
+    Application.fetch_env(:ex_gridhook, :revision)
+    |> elem(1)
+    |> elem(1)
+    |> System.get_env || "no revision is set."
   end
 end

@@ -37,3 +37,6 @@ config :ex_gridhook, ExGridhook.Repo,
 config :ex_gridhook, :basic_auth_config,
   username: "foo",
   password: "baz"
+
+config :ex_gridhook,
+  revision: {:system, "HEROKU_SLUG_COMMIT", "some revision"}

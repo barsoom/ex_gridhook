@@ -12,7 +12,6 @@ defmodule ExGridhookWeb.RootController do
         {:error, _reason} -> fetch_revision_from_env()
       end
 
-
     send_resp(conn, 200, revision)
   end
 
@@ -25,6 +24,6 @@ defmodule ExGridhookWeb.RootController do
     Application.fetch_env(:ex_gridhook, :revision)
     |> elem(1)
     |> elem(1)
-    |> System.get_env || "no revision is set."
+    |> System.get_env() || "no revision is set."
   end
 end

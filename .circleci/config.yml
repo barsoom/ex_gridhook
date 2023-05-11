@@ -52,18 +52,18 @@ jobs:
           paths:
             - bash.env
 
-  # deploy_to_production:
-  #   docker:
-  #     - image: cimg/ruby:3.2
-  #   steps:
-  #     - checkout
-  #     - attach_workspace:
-  #         at: .
-  #     - run: |
-  #         cat bash.env > $BASH_ENV
-  #     - run:
-  #         name: "Release production"
-  #         command: script/ci/pipeline.sh release_production "script/ci/docker/release.sh"
+  deploy_to_production:
+    docker:
+      - image: cimg/ruby:3.2
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: |
+          cat bash.env > $BASH_ENV
+      - run:
+          name: "Release production"
+          command: script/ci/pipeline.sh deploy "script/ci/deploy.sh auctionet-ex-gridhook"
 
 workflows:
   deploy-workflow:
@@ -76,12 +76,12 @@ workflows:
             branches:
               only:
                 - master
-      # - deploy_to_production:
-      #     context: shared-config
-      #     requires:
-      #       - test
-      #       - prepare_app_image
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
+      - deploy_to_production:
+          context: shared-config
+          requires:
+            - test
+            - prepare_app_image
+          filters:
+            branches:
+              only:
+                - master

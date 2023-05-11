@@ -12,10 +12,10 @@ test-image:
 	  --build-arg ERLANG_VERSION=$(ERLANG_VERSION) \
 	  --build-arg ELIXIR_VERSION=$(ELIXIR_VERSION) \
 	  --build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
-		--build-arg REVISION=$(REVISION) \
+	  --build-arg REVISION=$(REVISION) \
 	  --progress=plain \
 	  -f Dockerfile \
-		-t ${APP_NAME}:test \
+	  -t ${APP_NAME}:test \
 	  .
 
 prod-image:
@@ -24,11 +24,10 @@ prod-image:
 	  --build-arg ERLANG_VERSION=$(ERLANG_VERSION) \
 	  --build-arg ELIXIR_VERSION=$(ELIXIR_VERSION) \
 	  --build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
-		--build-arg REVISION=$(REVISION) \
+	  --build-arg REVISION=$(REVISION) \
 	  --progress=plain \
 	  -f Dockerfile \
-		-t ${APP_NAME}:web \
-	  .
+	  -t ${APP_NAME} .
 
 run: prod-image
-	docker run -p 48546:48546 -it ${APP_NAME}:web $(COMMAND)
+	docker run -p 48546:48546 -it ${APP_NAME} $(COMMAND)

@@ -27,30 +27,22 @@ jobs:
           command: script/ci/pipeline.sh test "script/ci/docker/test.sh"
 
   prepare_app_image:
+    environment:
+      APP_NAMES: |
+          auctionet-ex-gridhook
+    resource_class: medium
     docker:
       - image: cimg/base:stable
     steps:
-      - run:
-          name: "Installing tools"
-          command: sudo apt-get update -q && sudo apt-get install -q -y ruby && sudo apt-get install -q -y bash  && sudo apt-get install -q -y make
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: "Log in to heroku docker registry"
-          command: echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+      - heroku/install
       - checkout
+      - setup_remote_docker:
+          version: 20.10.18
+          docker_layer_caching: false
       - run:
-          name: "Build production image"
-          command: script/ci/pipeline.sh build_prod "script/ci/docker/build_prod.sh"
-      - run:
-          name: "Push production image"
-          command: script/ci/pipeline.sh push_production "script/ci/docker/push.sh"
-      - run: |
-          cp $BASH_ENV bash.env
-      - persist_to_workspace:
-          root: .
-          paths:
-            - bash.env
+          name: "Preparing app image"
+          command: |
+            script/ci/pipeline.sh prepare_image "script/ci/prepare_app_image.sh"
 
   deploy_to_production:
     docker:

@@ -26,9 +26,11 @@ defmodule ExGridhookWeb.RootControllerTest do
   end
 
   test "GET /revision with file built_from_revision" do
+    System.delete_env("HEROKU_SLUG_COMMIT")
+
     File.write!("built_from_revision", "12345")
 
     conn = get(build_conn(), "/revision")
-    assert response(conn, 200) == File.read!("built_from_revision")
+    assert response(conn, 200) == "12345"
   end
 end

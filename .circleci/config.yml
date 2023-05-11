@@ -18,7 +18,7 @@ jobs:
           name: "Checking out code"
       - run:
           name: "Build test image"
-          command: script/ci/pipeline.sh build_test "script/ci/docker/build_test.sh"
+          command: script/ci/pipeline.sh build_test "make test-image"
       - run:
           name: "Run linters and code analysis"
           command: script/ci/pipeline.sh lint "script/ci/docker/lint.sh"

@@ -19,7 +19,7 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
 config :ex_gridhook,
   revision: {:system, "HEROKU_SLUG_COMMIT", "some revision"}
 
-  # Configures Elixir's Logger
+# Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]

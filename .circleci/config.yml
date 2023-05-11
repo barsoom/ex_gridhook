@@ -8,6 +8,7 @@ jobs:
     resource_class: medium
     docker:
       - image: cimg/base:stable
+      - image: cimg/postgres:14.5
     steps:
       - run:
           name: "Installing tools"
@@ -21,10 +22,10 @@ jobs:
           command: script/ci/pipeline.sh build_test "make test-image"
       - run:
           name: "Run linters and code analysis"
-          command: script/ci/pipeline.sh lint "script/ci/docker/lint.sh"
+          command: mix format --check-formatted && mix credo
       - run:
           name: "Run tests"
-          command: script/ci/pipeline.sh test "script/ci/docker/test.sh"
+          command:  mix do ecto.create, ecto.migrate && mix test
 
   prepare_app_image:
     environment:

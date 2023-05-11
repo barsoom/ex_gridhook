@@ -58,10 +58,6 @@ jobs:
     steps:
       - heroku/install
       - checkout
-      - attach_workspace:
-          at: .
-      - run: |
-          cat bash.env > $BASH_ENV
       - run:
           name: "Release production"
           command: script/ci/pipeline.sh deploy "script/ci/deploy.sh auctionet-ex-gridhook"

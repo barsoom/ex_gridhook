@@ -54,8 +54,9 @@ jobs:
 
   deploy_to_production:
     docker:
-      - image: cimg/ruby:3.2
+      - image: cimg/base:stable
     steps:
+      - heroku/install
       - checkout
       - attach_workspace:
           at: .

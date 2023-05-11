@@ -1,3 +1,5 @@
 #!/bin/sh
 
-docker push registry.heroku.com/auctionet-ex-gridhook/web:latest
+revision=$(git rev-parse HEAD)
+
+docker push registry.heroku.com/auctionet-ex-gridhook/web:$revision

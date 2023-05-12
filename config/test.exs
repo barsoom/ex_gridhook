@@ -9,27 +9,17 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-# Configure your database
-{username, port, password, db_name} =
-  cond do
-    System.get_env("DEVBOX") ->
-      {"postgres", System.cmd("service_port", ["postgres"]) |> elem(0) |> String.trim(), "dev",
-       "ex_gridhook_test"}
-
-    System.get_env("CIRCLECI") ->
-      {"postgres", "5432", "circle_test", "circle_test"}
-
-    true ->
-      {System.get_env("DB_USER") || System.get_env("USER"), "5432", "", "ex_gridhook_test"}
+devbox_port =
+  if System.get_env("DEVBOX") do
+    System.cmd("service_port", ["postgres"]) |> elem(0) |> String.trim()
   end
 
 config :ex_gridhook, ExGridhook.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: username,
-  password: password,
-  port: port,
+  username: "postgres",
+  password: "dev",
+  port: devbox_port,
   database: "ex_gridhook_test",
-  url: System.get_env("DATABASE_CONNECTION_POOL_URL") || System.get_env("DATABASE_URL"),
   pool: Ecto.Adapters.SQL.Sandbox
 
 # Configure Basic Auth

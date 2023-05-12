@@ -21,7 +21,7 @@ jobs:
           docker_layer_caching: true
       - checkout:
           name: "Checking out code"
-      - run: 
+      - run:
           name: "Installing dependencies"
           command: mix local.hex --force && mix local.rebar --force && mix deps.get && mix compile && apk add bash git curl
       - run:

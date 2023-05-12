@@ -9,9 +9,9 @@ jobs:
     docker:
       - image: hexpm/elixir:1.14.1-erlang-25.3.2-alpine-3.17.3
         environment:
-          - MIX_ENV=test
-          - DB_USER=postgres
-          - DATABASE_URL=postgres://postgres@localhost/auctionet_test
+          MIX_ENV: test
+          DB_USER: postgres
+          DATABASE_URL: postgres://postgres@localhost/auctionet_test
       - image: postgres:14.5-alpine
         environment:
           POSTGRES_USER: postgres

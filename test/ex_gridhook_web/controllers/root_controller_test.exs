@@ -8,7 +8,7 @@ defmodule ExGridhookWeb.RootControllerTest do
   end
 
   test "GET /revision without built_from_revision file " do
-    File.rm!("built_from_revision")
+    File.rm("built_from_revision")
 
     conn = get(build_conn(), "/revision")
     assert response(conn, 200) =~ "no revision is set."

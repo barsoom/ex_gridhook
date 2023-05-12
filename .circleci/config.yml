@@ -7,19 +7,23 @@ jobs:
   test:
     resource_class: medium
     docker:
-      - image: cimg/base:stable
+      - image: hexpm/elixir:1.14.1-erlang-25.3.2-alpine-3.17.3
+        environment:
+          - MIX_ENV=test
+          - DB_USER=postgres
+          - DATABASE_URL=postgres://postgres@localhost/auctionet_test
       - image: cimg/postgres:14.5
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
     steps:
-      - run:
-          name: "Installing tools"
-          command: sudo apt-get update -q && sudo apt-get install -q -y ruby && sudo apt-get install -q -y bash  && sudo apt-get install -q -y make
       - setup_remote_docker:
           docker_layer_caching: true
       - checkout:
           name: "Checking out code"
-      - run:
-          name: "Build test image"
-          command: script/ci/pipeline.sh build_test "make test-image"
+      - run: 
+          name: "Installing dependencies"
+          command: mix local.hex --force && mix local.rebar --force && mix deps.get && mix compile && apk add bash git curl
       - run:
           name: "Run linters and code analysis"
           command: mix format --check-formatted && mix credo

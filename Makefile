@@ -6,18 +6,6 @@ COMMAND ?= `grep 'web' Procfile | cut -d ':' -f2`
 REVISION ?= `git rev-parse HEAD`
 APP_NAME ?= ex_gridhook
 
-test-image:
-	DOCKER_BUILDKIT=1 docker build \
-	  --build-arg MIX_ENV=test \
-	  --build-arg ERLANG_VERSION=$(ERLANG_VERSION) \
-	  --build-arg ELIXIR_VERSION=$(ELIXIR_VERSION) \
-	  --build-arg ALPINE_VERSION=$(ALPINE_VERSION) \
-	  --build-arg REVISION=$(REVISION) \
-	  --progress=plain \
-	  -f Dockerfile \
-	  -t ${APP_NAME}:test \
-	  .
-
 prod-image:
 	DOCKER_BUILDKIT=1 docker build \
 	  --build-arg MIX_ENV=prod \

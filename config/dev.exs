@@ -33,7 +33,7 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r{priv/gettext/.*(po)$},
+      ~r{priv/gettext/.*(po)$}
     ]
   ]
 

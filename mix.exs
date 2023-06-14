@@ -7,7 +7,6 @@ defmodule ExGridhook.Mixfile do
       version: "0.0.1",
       elixir: ">= 0.0.0",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -38,11 +37,12 @@ defmodule ExGridhook.Mixfile do
       {:gettext, ">= 0.0.0"},
       {:honeybadger, ">= 0.0.0"},
       {:jason, ">= 0.0.0"},
-      {:phoenix, "< 1.7.0"},
+      {:phoenix, "~> 1.7.0"},
       {:phoenix_ecto, ">= 0.0.0"},
       {:phoenix_html, ">= 0.0.0"},
       {:phoenix_live_reload, ">= 0.0.0", only: :dev},
       {:phoenix_pubsub, ">= 2.0.0"},
+      {:phoenix_view, "~> 2.0"},
       {:plug_cowboy, ">= 1.0.0"},
       {:postgrex, ">= 0.0.0"},
       {:yaml_elixir, ">= 0.0.0"}

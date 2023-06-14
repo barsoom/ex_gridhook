@@ -17,12 +17,16 @@ defmodule ExGridhookWeb do
   and import those modules here.
   """
 
+  def static_paths, do: ~w(css fonts images js favicon.ico robots.txt)
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: ExGridhookWeb
       import Plug.Conn
       import ExGridhookWeb.Router.Helpers
       import ExGridhookWeb.Gettext
+
+      unquote(verified_routes())
     end
   end
 
@@ -39,6 +43,15 @@ defmodule ExGridhookWeb do
       import ExGridhookWeb.Router.Helpers
       import ExGridhookWeb.ErrorHelpers
       import ExGridhookWeb.Gettext
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: ExGridhookWeb.Endpoint,
+        router: ExGridhookWeb.Router,
+        statics: ExGridhookWeb.static_paths()
     end
   end
 

@@ -24,6 +24,8 @@ defmodule ExGridhookWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint ExGridhookWeb.Endpoint
+
+      use ExGridhookWeb, :verified_routes
     end
   end
 

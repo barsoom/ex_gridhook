@@ -33,10 +33,7 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{lib/ex_gridhook_web/views/.*(ex)$},
-      ~r{lib/ex_gridhook_web/templates/.*(eex)$}
     ]
   ]
 

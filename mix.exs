@@ -45,7 +45,8 @@ defmodule ExGridhook.Mixfile do
       {:phoenix_view, "~> 2.0"},
       {:plug_cowboy, ">= 1.0.0"},
       {:postgrex, ">= 0.0.0"},
-      {:yaml_elixir, ">= 0.0.0"}
+      {:yaml_elixir, ">= 0.0.0"},
+      {:phoenix_html_helpers, "~> 1.0"}
     ]
   end
 

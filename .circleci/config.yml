@@ -42,7 +42,7 @@ jobs:
       - heroku/install
       - checkout
       - setup_remote_docker:
-          version: 20.10.18
+          version: default
           docker_layer_caching: false
       - run:
           name: "Preparing app image"

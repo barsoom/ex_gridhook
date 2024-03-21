@@ -33,9 +33,8 @@ defmodule ExGridhookWeb do
   def live_view(opts \\ []) do
     quote do
       @moduledoc false
-      use Phoenix.LiveView,
-        layout: {ExGridhookWeb.PageLayouts, :app}
-
+      # use Phoenix.LiveView, layout: {ExGridhookWeb.PageLayouts, :app}
+      use Phoenix.LiveView
       # import MapPipe
 
       # the require is here only to get rid of a warning about the callback not being defined,
@@ -63,10 +62,10 @@ defmodule ExGridhookWeb do
       # unquote(live_helpers())
 
       #live_helpers()
-      import LoganWeb.Helpers.Concurrent
-      import LoganWeb.Helpers.EventProcessor
-      import LoganWeb.Helpers.LiveHelpers
-      import LoganWeb.Hooks.LiveFlash, only: [push_flash: 3]
+      # import ExGridhookWeb.Helpers.Concurrent
+      # import ExGridhookWeb.Helpers.EventProcessor
+      import ExGridhookWeb.Helpers.LiveHelpers
+      # import ExGridhookWeb.Hooks.LiveFlash, only: [push_flash: 3]
 
       # html_helpers()
       #
@@ -75,10 +74,10 @@ defmodule ExGridhookWeb do
 
       # Core UI components; put smaller components that you want to be available
       # globally into CoreComponents.__using__/1
-      use LoganWeb.Component
-      use LoganWeb.CoreComponents
+      # use ExGridhookWeb.Component
+      # use ExGridhookWeb.CoreComponents
 
-      import LoganWeb.Gettext
+      # import ExGridhookWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
@@ -116,5 +115,9 @@ defmodule ExGridhookWeb do
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
+  end
+
+  defmacro __using__([which | opts]) when is_atom(which) do
+    apply(__MODULE__, which, [opts])
   end
 end

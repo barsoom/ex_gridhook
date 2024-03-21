@@ -30,6 +30,62 @@ defmodule ExGridhookWeb do
     end
   end
 
+  def live_view(opts \\ []) do
+    quote do
+      @moduledoc false
+      use Phoenix.LiveView,
+        layout: {ExGridhookWeb.PageLayouts, :app}
+
+      # import MapPipe
+
+      # the require is here only to get rid of a warning about the callback not being defined,
+      # marking this as a compilation dependency seems to fix that
+      # require ExGridhookWeb.Auth.SSO
+      # on_mount ExGridhookWeb.Auth.SSO
+
+      # case unquote(opts) |> Keyword.fetch(:role) do
+      #   {:ok, role} ->
+      #     on_mount {ExGridhookWeb.Auth.RoleAuthorizer, role}
+
+      #   :error ->
+      #     raise "LoganWeb requires a :role option for :live_view (use :default to allow all roles)"
+      # end
+
+      # if Application.compile_env(:logan, :sandbox) do
+      #   on_mount LoganWeb.Hooks.AllowEctoSandbox
+      # end
+
+      # on_mount {LoganWeb.Localize, LoganWeb.Gettext}
+      # on_mount LoganWeb.Hooks.LiveFlash
+      # on_mount LoganWeb.Hooks.Presence
+
+      # unquote(html_helpers())
+      # unquote(live_helpers())
+
+      #live_helpers()
+      import LoganWeb.Helpers.Concurrent
+      import LoganWeb.Helpers.EventProcessor
+      import LoganWeb.Helpers.LiveHelpers
+      import LoganWeb.Hooks.LiveFlash, only: [push_flash: 3]
+
+      # html_helpers()
+      #
+      import Phoenix.HTML
+      import Phoenix.HTML.Form
+
+      # Core UI components; put smaller components that you want to be available
+      # globally into CoreComponents.__using__/1
+      use LoganWeb.Component
+      use LoganWeb.CoreComponents
+
+      import LoganWeb.Gettext
+
+      # Shortcut for generating JS commands
+      alias Phoenix.LiveView.JS
+
+    end
+  end
+
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,

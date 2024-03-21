@@ -1,13 +1,16 @@
 defmodule ExGridhookWeb.Router do
   use ExGridhookWeb, :router
   use Honeybadger.Plug
+  use Phoenix.Router
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
-    plug(:accepts, ["html"])
-    plug(:fetch_session)
-    plug(:fetch_flash)
-    plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :fetch_flash
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
   end
 
   pipeline :api do
@@ -19,8 +22,15 @@ defmodule ExGridhookWeb.Router do
     pipe_through(:browser)
 
     get("/", RootController, :index)
+    get("/home", RootController, :home)
     get("/revision", RootController, :revision)
     get("/boom", RootController, :boom)
+  end
+
+  scope "/live", ExGridhookWeb do
+    pipe_through(:browser)
+
+    live "/", RootLive.Home
   end
 
   scope "/events", ExGridhookWeb do

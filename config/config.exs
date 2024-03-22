@@ -12,8 +12,12 @@ config :ex_gridhook,
 # Configures the endpoint
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   url: [host: "localhost"],
+  adapter: Bandit.PhoenixAdapter,
   secret_key_base: System.get_env("SECRET_KEY_BASE") || "no secret",
-  pubsub_server: ExGridhook.PubSub
+  pubsub_server: ExGridhook.PubSub,
+  live_view: [signing_salt: "60/TmZ/c"]
+
+
 
 config :ex_gridhook,
   revision: {:system, "HEROKU_SLUG_COMMIT", "some revision"}

@@ -100,6 +100,7 @@ defmodule ExGridhookWeb do
       import Plug.Conn
       import Plug.BasicAuth
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 

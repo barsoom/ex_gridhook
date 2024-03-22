@@ -1,8 +1,7 @@
 defmodule ExGridhookWeb.Router do
   use ExGridhookWeb, :router
   use Honeybadger.Plug
-  use Phoenix.Router
-  import Phoenix.LiveView.Router
+
 
   pipeline :browser do
     plug :accepts, ["html"]

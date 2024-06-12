@@ -1,0 +1,287 @@
+name: CI/CD Pipeline
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      ssh_debugging:
+        description: Enable SSH debugging
+        type: boolean
+        required: true
+        default: false
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: gha-runner-scale-set
+    services:
+     postgres:
+        image: postgres:14.7-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    env:
+      MIX_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ vars.ERLANG_VERSION }} # 25.3.2
+          elixir-version: ${{ vars.ELIXIR_VERSION }} # 1.14.1
+      - name: Installing dependencies
+        run: mix local.hex --force && mix local.rebar --force && mix deps.get && mix compile && apk add bash git curl
+      - name: Run linters and code analysis
+        run: mix format --check-formatted && mix credo
+      - name: Connect to PostgreSQL
+        # Runs a script that creates a PostgreSQL table, populates
+        # the table with data, and then retrieves the data.
+        run: mix do ecto.create, ecto.migrate
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
+      - name: SSH debugging instructions
+        if: "${{ github.event.inputs.ssh_debugging == 'true' }}"
+        run: |
+          echo "SSH debugging enabled."
+          echo
+          echo "To connect, run the following command in your devbox."
+          echo
+          echo "kubectl exec --stdin --tty $HOSTNAME --container runner -- /bin/bash"
+      - name: Wait for SSH debugging
+        if: "${{ github.event.inputs.ssh_debugging == 'true' }}"
+        run: |
+          echo "Sleeping for 1 hour."
+          sleep 1h
+      - name: Run test
+        run: script/ci/pipeline.sh test "mix test"
+  build-and-push-image:
+    name: Build and push Docker image to ECR and Heroku Container Registry
+    runs-on: gha-runner-scale-set
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ECR_ACCESS_ROLE_ARN }}
+      - name: Log into AWS ECR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+      - name: Log in to Heroku Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: registry.heroku.com
+          username: ${{ secrets.HEROKU_REGISTRY_USERNAME }}
+          password: ${{ secrets.HEROKU_REGISTRY_TOKEN }}
+      - name: Determine image tag
+        id: tag
+        run: |
+          if [[ "${{ github.ref_name }}" == "${{ github.event.repository.default_branch }}" ]]; then
+            echo "image_tag=sha-${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "image_tag=${{ github.ref_name }}-sha-${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Build and push Docker image with revision and latest tags
+        uses: docker/build-push-action@v5
+        with:
+          build-args: |
+            ERLANG_VERSION=${{ vars.ERLANG_VERSION }}
+            ELIXIR_VERSION=${{ vars.ELIXIR_VERSION }}
+            ALPINE_VERSION=${{ vars.ALPINE_VERSION }}
+            AWS_ACCESS_KEY_ID=${{ secrets.DOCKER_BUILDER_AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.DOCKER_BUILDER_AWS_SECRET_ACCESS_KEY }}
+            REVISION=${{ github.sha }}
+          context: .
+          push: true
+          tags: |
+            registry.heroku.com/auctionet-index-staging/app:${{ github.sha }}
+            registry.heroku.com/auctionet-index-production/app:${{ github.sha }}
+            registry.heroku.com/auctionet-query-staging/app:${{ github.sha }}
+            registry.heroku.com/auctionet-query-production/app:${{ github.sha }}
+            ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/search:${{ steps.tag.outputs.image_tag }}
+
+  deploy-to-staging:
+    name: Deploy to Stack staging
+    runs-on: gha-runner-scale-set
+    if: github.ref_name == github.event.repository.default_branch
+    needs:
+      - test
+      - build-and-push-image
+    concurrency:
+      group: ${{ github.job }}-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+      - name: Checkout stack repository
+        uses: actions/checkout@v4
+        with:
+          repository: barsoom/stack
+          path: stack
+          token: ${{ secrets.STACK_TOKEN }}
+          sparse-checkout: |
+            applications/staging-search/values.yaml
+            script/ci/deploy.sh
+            script/ci/ensure_revision_is_newer_than_deployed_revision.sh
+
+      - name: Ensure revision is newer than deployed revision
+        run: stack/script/ci/ensure_revision_is_newer_than_deployed_revision.sh
+
+      - name: Update values.yaml with new image tag, in staging
+        run: |
+          NEW_TAG="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/search:sha-${{ github.sha }}"
+          sed -i "s|image:.*|image: $NEW_TAG|g" stack/applications/staging-search/values.yaml
+
+      - name: Deploy to Stack staging
+        run: stack/script/ci/deploy.sh
+
+      - name: Smoke test on Stack staging query
+        run: APP_URL=https://query.staging.auctionet.dev script/ci/smoke_test.sh ${{ secrets.STAGING_API_TOKEN }}
+
+      - name: Smoke test on Stack staging index
+        run: APP_URL=https://index.staging.auctionet.dev script/ci/smoke_test.sh ${{ secrets.STAGING_API_TOKEN }}
+
+      - name: Get API_TOKEN from Heroku config
+        id: get_heroku_token
+        run: |
+          echo -e "machine api.heroku.com\n  login ${{ secrets.HEROKU_REGISTRY_USERNAME }}\n  password ${{ secrets.HEROKU_REGISTRY_TOKEN }}\nmachine code.heroku.com\n  login ${{ secrets.HEROKU_REGISTRY_USERNAME }}\n  password ${{ secrets.HEROKU_REGISTRY_TOKEN }}\nmachine git.heroku.com\n  login ${{ secrets.HEROKU_REGISTRY_USERNAME }}\n  password ${{ secrets.HEROKU_REGISTRY_TOKEN }}" > ~/.netrc
+          chmod 0600 ~/.netrc
+          curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+          value=$(heroku config:get API_TOKENS -a auctionet-query-staging)
+          echo "deployed_app_api_token=${value}" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to Heroku staging
+        env:
+          HEROKU_REGISTRY_TOKEN: ${{ secrets.HEROKU_REGISTRY_TOKEN }}
+          DEPLOYED_APP_API_TOKEN: ${{ steps.get_heroku_token.deployed_app_api_token }}
+        run: script/ci/pipeline.sh deploy_staging "script/ci/deploy_from_github_actions.sh staging"
+
+  rebuild-indices-staging:
+    name: Rebuild indices in staging
+    runs-on: gha-runner-scale-set
+    if: github.ref_name == github.event.repository.default_branch
+    needs:
+      - deploy-to-staging
+    concurrency:
+      group: ${{ github.job }}-
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Rebuild indices on Heroku
+        run: |
+          did_configuration_change=$(git log --pretty=%H ${{ github.event.before }}...${{ github.event.after }} -- lib/search/elasticsearch/index_configuration.ex)
+          if [ -z "$did_configuration_change" ]; then
+            echo "No staging reindex. Configuration unchanged." >> $GITHUB_STEP_SUMMARY
+          else
+            output=$(script/ci/rebuild_indices_on_heroku.sh staging)
+            echo "### Staging reindex! 🚀" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY # This is a blank line
+            echo "${output}" >> $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          HEROKU_REGISTRY_USERNAME: ${{ secrets.HEROKU_REGISTRY_USERNAME }}
+          HEROKU_REGISTRY_TOKEN: ${{ secrets.HEROKU_REGISTRY_TOKEN }}
+
+  deploy-to-production:
+    name: Deploy to Stack production
+    runs-on: gha-runner-scale-set
+    if: github.ref_name == github.event.repository.default_branch
+    needs:
+      - test
+      - build-and-push-image
+      - deploy-to-staging
+    concurrency:
+      group: ${{ github.job }}-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+      - name: Checkout stack repository
+        uses: actions/checkout@v4
+        with:
+          repository: barsoom/stack
+          path: stack
+          token: ${{ secrets.STACK_TOKEN }}
+          sparse-checkout: |
+            applications/production-search/values.yaml
+            script/ci/deploy.sh
+            script/ci/ensure_revision_is_newer_than_deployed_revision.sh
+
+      - name: Ensure revision is newer than deployed revision
+        run: stack/script/ci/ensure_revision_is_newer_than_deployed_revision.sh
+
+      - name: Update values.yaml with new image tag, in production
+        run: |
+          NEW_TAG="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/search:sha-${{ github.sha }}"
+          sed -i "s|image:.*|image: $NEW_TAG|g" stack/applications/production-search/values.yaml
+
+      - name: Deploy to Stack production
+        run: stack/script/ci/deploy.sh
+
+      - name: Smoke test on Stack production query
+        run: APP_URL=https://query.production.auctionet.dev script/ci/smoke_test.sh ${{ secrets.PRODUCTION_API_TOKEN }}
+
+      - name: Smoke test on Stack production index
+        run: APP_URL=https://index.production.auctionet.dev script/ci/smoke_test.sh ${{ secrets.PRODUCTION_API_TOKEN }}
+
+      - name: Get API_TOKEN from Heroku config
+        id: get_heroku_token
+        run: |
+          echo -e "machine api.heroku.com\n  login ${{ secrets.HEROKU_REGISTRY_USERNAME }}\n  password ${{ secrets.HEROKU_REGISTRY_TOKEN }}\nmachine code.heroku.com\n  login ${{ secrets.HEROKU_REGISTRY_USERNAME }}\n  password ${{ secrets.HEROKU_REGISTRY_TOKEN }}\nmachine git.heroku.com\n  login ${{ secrets.HEROKU_REGISTRY_USERNAME }}\n  password ${{ secrets.HEROKU_REGISTRY_TOKEN }}" > ~/.netrc
+          chmod 0600 ~/.netrc
+          curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+          value=$(heroku config:get API_TOKENS -a auctionet-query-production)
+          echo "deployed_app_api_token=${value}" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to Heroku production
+        env:
+          HEROKU_REGISTRY_TOKEN: ${{ secrets.HEROKU_REGISTRY_TOKEN }}
+          DEPLOYED_APP_API_TOKEN: ${{ steps.get_heroku_token.deployed_app_api_token }}
+        run: script/ci/pipeline.sh deploy_staging "script/ci/deploy_from_github_actions.sh production"
+
+  rebuild-indices-production:
+    name: Rebuild indices in production
+    runs-on: gha-runner-scale-set
+    if: github.ref_name == github.event.repository.default_branch
+    needs:
+      - deploy-to-production
+    concurrency:
+      group: ${{ github.job }}-
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Rebuild indices on Heroku
+        run: |
+          did_configuration_change=$(git log --pretty=%H ${{ github.event.before }}...${{ github.event.after }} -- lib/search/elasticsearch/index_configuration.ex)
+          if [ -z "$did_configuration_change" ]; then
+            echo "No production reindex. Configuration unchanged." >> $GITHUB_STEP_SUMMARY
+          else
+            output=$(script/ci/rebuild_indices_on_heroku.sh production)
+            echo "### Production reindex! 🚀" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY # This is a blank line
+            echo "${output}" >> $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          HEROKU_REGISTRY_USERNAME: ${{ secrets.HEROKU_REGISTRY_USERNAME }}
+          HEROKU_REGISTRY_TOKEN: ${{ secrets.HEROKU_REGISTRY_TOKEN }}

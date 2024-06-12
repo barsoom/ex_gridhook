@@ -40,6 +40,8 @@ defmodule ExGridhook.Mixfile do
       {:phoenix, "~> 1.7.0"},
       {:phoenix_ecto, ">= 0.0.0"},
       {:phoenix_html, ">= 0.0.0"},
+      {:phoenix_live_dashboard, "~> 0.8.0"},
+      {:phoenix_live_view, "~> 0.20.5"},
       {:phoenix_live_reload, ">= 0.0.0", only: :dev},
       {:phoenix_pubsub, ">= 2.0.0"},
       {:phoenix_view, "~> 2.0"},

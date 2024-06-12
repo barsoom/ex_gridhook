@@ -3,11 +3,13 @@ defmodule ExGridhookWeb.Router do
   use Honeybadger.Plug
 
   pipeline :browser do
-    plug(:accepts, ["html"])
-    plug(:fetch_session)
-    plug(:fetch_flash)
-    plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    # plug :fetch_live_flash
+    plug :put_root_layout, html: {ExGridhookWeb.Layouts, :home}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
   end
 
   pipeline :api do
@@ -19,6 +21,7 @@ defmodule ExGridhookWeb.Router do
     pipe_through(:browser)
 
     get("/", RootController, :index)
+    get("/ui", RootController, :ui)
     get("/revision", RootController, :revision)
     get("/boom", RootController, :boom)
   end

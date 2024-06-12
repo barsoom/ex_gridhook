@@ -3,6 +3,12 @@ defmodule ExGridhookWeb.RootController do
 
   def index(conn, _params) do
     send_resp(conn, 200, "This app handles incoming sendgrid events.")
+    # render(conn, "index.html")
+  end
+
+  def ui(conn, _params) do
+    render(conn, :home)
+    # send_resp(conn, 200, "This")
   end
 
   def revision(conn, _params) do

@@ -7,7 +7,7 @@ defmodule ExGridhookWeb.RootController do
   end
 
   def ui(conn, _params) do
-    render(conn, :home)
+    render(conn, :app)
     # send_resp(conn, 200, "This")
   end
 

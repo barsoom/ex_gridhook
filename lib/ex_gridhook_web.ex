@@ -41,7 +41,7 @@ defmodule ExGridhookWeb do
     quote do
       use Phoenix.Controller,
       formats: [:html, :json],
-      layouts: [html: ExGridWeb.Layouts],
+      layouts: [html: ExGridhookWeb.Layouts],
       namespace: ExGridhookWeb
 
       import Plug.Conn
@@ -87,7 +87,7 @@ defmodule ExGridhookWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
-      # import ExGridhookWeb.CoreComponents
+      import ExGridhookWeb.CoreComponents
       import ExGridhookWeb.Gettext
 
       # Shortcut for generating JS commands

@@ -34,7 +34,7 @@ defmodule ExGridhookWeb.EventControllerTest do
         "sg_message_id" => "sendgrid_internal_message_id",
         "event" => "processed",
         "category" => "category",
-        "associated_records" => ~c'["Item:123", "Item:456"]'
+        "associated_records" => '["Item:123", "Item:456"]'
       },
       %{
         "email" => "john.doe@sendgrid.com",

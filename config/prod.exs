@@ -27,4 +27,5 @@ config :ex_gridhook, ExGridhook.Repo,
   url: System.get_env("DATABASE_CONNECTION_POOL_URL") || System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true,
+  ssl_opts: [verify: :verify_none],
   prepare: :unnamed

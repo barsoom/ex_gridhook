@@ -70,6 +70,7 @@ jobs:
             ERLANG_VERSION=${{ needs.versions.outputs.erlang }}
             ELIXIR_VERSION=${{ needs.versions.outputs.elixir }}
             ALPINE_VERSION=${{ needs.versions.outputs.alpine }}
+            MIX_ENV=prod
             AWS_ACCESS_KEY_ID=${{ secrets.DOCKER_BUILDER_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.DOCKER_BUILDER_AWS_SECRET_ACCESS_KEY }}
             REVISION=${{ github.sha }}

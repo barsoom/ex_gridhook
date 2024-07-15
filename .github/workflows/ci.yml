@@ -22,7 +22,8 @@ jobs:
       postgres: ${{ steps.versions.outputs.postgres }}
 
   test:
-    runs-on: hexpm/elixir:${{ needs.versions.outputs.elixir }}-erlang-${{ needs.versions.outputs.erlang }}-alpine-${{ needs.versions.outputs.alpine }}
+    runs-on: ubuntu-latest
+    container: hexpm/elixir:${{ needs.versions.outputs.elixir }}-erlang-${{ needs.versions.outputs.erlang }}-alpine-${{ needs.versions.outputs.alpine }}
     needs: versions
     services:
       postgres:
@@ -40,7 +41,7 @@ jobs:
     env:
       MIX_ENV: test
       DB_USER: postgres
-      DATABASE_URL: postgres://postgres@localhost/ex_gridhook_test
+      DATABASE_URL: postgres://postgres@postgres/ex_gridhook_test
     steps:
       - uses: actions/checkout@v4
       - run: mix local.hex --force && mix local.rebar --force && mix deps.get && mix compile

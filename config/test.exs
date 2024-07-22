@@ -7,7 +7,7 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
   server: false
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
 devbox_port =
   if System.get_env("DEVBOX") do

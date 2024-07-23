@@ -48,7 +48,7 @@ jobs:
       - run: mix format --check-formatted && mix credo
       - run: mix do ecto.create, ecto.migrate && mix test
 
-  prepare-app-image:
+  build:
     runs-on: ubuntu-latest
     needs: versions
     permissions:
@@ -85,7 +85,7 @@ jobs:
     if: github.ref_name == github.event.repository.default_branch
     needs:
       - test
-      - prepare-app-image
+      - build
     concurrency:
       group: deploy-to-production
       cancel-in-progress: false
@@ -114,4 +114,4 @@ jobs:
           sed -i "s|image:.*|image: $NEW_TAG|g" stack/applications/gridhook/values.yaml
 
       - name: Deploy
-        run: stack/script/ci/deploy.sh
+        run: stack/script/ci/deploy.sh gridhook.auctionet.dev

@@ -3,52 +3,6 @@ version: 2.1
 orbs:
   heroku: circleci/heroku@2.0.0 # https://circleci.com/developer/orbs/orb/circleci/heroku
 
-jobs:
-  test:
-    resource_class: medium
-    docker:
-      - image: hexpm/elixir:1.16.2-erlang-26.2.5-alpine-3.19.1
-        environment:
-          MIX_ENV: test
-          DB_USER: postgres
-          DATABASE_URL: postgres://postgres@localhost/auctionet_test
-      - image: postgres:15.5-alpine
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
-    steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - checkout:
-          name: "Checking out code"
-      - run:
-          name: "Installing dependencies"
-          command: mix local.hex --force && mix local.rebar --force && mix deps.get && mix compile && apk add bash git curl
-      - run:
-          name: "Run linters and code analysis"
-          command: mix format --check-formatted && mix credo
-      - run:
-          name: "Run tests"
-          command: script/ci/pipeline.sh test "mix do ecto.create, ecto.migrate && mix test"
-
-  prepare_app_image:
-    environment:
-      APP_NAMES: |
-          auctionet-ex-gridhook
-    resource_class: medium
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - heroku/install
-      - checkout
-      - setup_remote_docker:
-          version: default
-          docker_layer_caching: false
-      - run:
-          name: "Preparing app image"
-          command: |
-            script/ci/pipeline.sh prepare_image "script/ci/prepare_app_image.sh"
-
   deploy_to_production:
     docker:
       - image: cimg/base:stable
@@ -57,7 +11,6 @@ jobs:
       - checkout
       - run:
           name: "Release production"
-          command: script/ci/pipeline.sh deploy "script/ci/deploy.sh auctionet-ex-gridhook"
 
 workflows:
   deploy-workflow:

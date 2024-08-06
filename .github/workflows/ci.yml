@@ -40,7 +40,7 @@ jobs:
     env:
       MIX_ENV: test
       DB_USER: postgres
-      DATABASE_URL: postgres://postgres@postgres/ex_gridhook_test
+      DATABASE_URL: postgres://postgres@localhost/ex_gridhook_test
     steps:
       - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1

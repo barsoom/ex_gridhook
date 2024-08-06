@@ -23,7 +23,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    container: hexpm/elixir:${{ needs.versions.outputs.elixir }}-erlang-${{ needs.versions.outputs.erlang }}-alpine-${{ needs.versions.outputs.alpine }}
     needs: versions
     services:
       postgres:
@@ -44,7 +43,28 @@ jobs:
       DATABASE_URL: postgres://postgres@postgres/ex_gridhook_test
     steps:
       - uses: actions/checkout@v4
-      - run: mix local.hex --force && mix local.rebar --force && mix deps.get && mix compile
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: ${{ needs.versions.outputs.erlang }}
+          elixir-version: ${{ needs.versions.outputs.elixir }}
+      - uses: actions/cache/restore@v4
+        id: cache-restore-mix-deps
+        with:
+          path: |
+            deps
+            _build
+          key: mix-${{ needs.versions.outputs.erlang }}-${{ needs.versions.outputs.elixir }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            mix-${{ needs.versions.outputs.erlang }}-${{ needs.versions.outputs.elixir }}-
+      - name: Prepare deps
+        if: steps.cache-restore-mix-deps.outputs.cache-hit != 'true'
+        run: mix do deps.get, deps.compile
+      - uses: actions/cache/save@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ steps.cache-restore-mix-deps.outputs.cache-primary-key }}
       - run: mix format --check-formatted && mix credo
       - run: mix do ecto.create, ecto.migrate && mix test
 

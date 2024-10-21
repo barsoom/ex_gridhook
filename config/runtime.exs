@@ -5,7 +5,7 @@ if config_env() == :prod do
 
   config :ex_gridhook, ExGridhookWeb.Endpoint,
     load_from_system_env: true,
-    url: [scheme: "https", host: "auctionet-ex-gridhook.herokuapp.com", port: 443],
+    url: [scheme: "https", host: "gridhook.auctionet.dev", port: 443],
     force_ssl: [rewrite_on: [:x_forwarded_proto]],
     cache_static_manifest: "priv/static/cache_manifest.json",
     http: [:inet6, port: port]

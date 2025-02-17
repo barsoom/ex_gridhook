@@ -135,4 +135,7 @@ jobs:
           sed -i "s|image:.*|image: $NEW_TAG|g" stack/applications/gridhook/values.yaml
 
       - name: Deploy
+        env:
+          DEPLOYS_DISABLED: ${{ vars.DEPLOYS_DISABLED_IN_PRODUCTION }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: stack/script/ci/deploy.sh gridhook.auctionet.dev

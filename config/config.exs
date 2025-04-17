@@ -36,7 +36,7 @@ config :honeybadger,
   filter: Honeybadger.Filter.Default,
   filter_keys: [:email],
   api_key: System.get_env("HONEYBADGER_API_KEY"),
-  origin: System.get_env("HONEYBADGER_ORIGIN"),
+  origin: System.get_env("HONEYBADGER_ORIGIN", "https://api.honeybadger.io"),
   breadcrumbs_enabled: true
 
 # Import environment specific config. This must remain at the bottom

@@ -20,5 +20,5 @@ defmodule ExGridhookWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :ex_gridhook
+  use Gettext.Backend, otp_app: :ex_gridhook
 end

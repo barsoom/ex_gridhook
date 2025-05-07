@@ -24,7 +24,7 @@ defmodule ExGridhookWeb do
       use Phoenix.Controller, namespace: ExGridhookWeb
       import Plug.Conn
       import ExGridhookWeb.Router.Helpers
-      import ExGridhookWeb.Gettext
+      use Gettext, backend: ExGridhookWeb.Gettext
 
       unquote(verified_routes())
     end

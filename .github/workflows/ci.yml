@@ -13,7 +13,7 @@ jobs:
   versions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Determine versions
         id: versions
         run: |
@@ -48,7 +48,7 @@ jobs:
       DB_USER: postgres
       DATABASE_URL: postgres://postgres@localhost/ex_gridhook_test
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: erlef/setup-beam@v1
         with:
           otp-version: ${{ needs.versions.outputs.erlang }}
@@ -82,7 +82,7 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -119,12 +119,12 @@ jobs:
       group: deploy-to-production
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.repository.default_branch }}
           fetch-depth: 0
       - name: Checkout stack repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: barsoom/stack
           path: stack

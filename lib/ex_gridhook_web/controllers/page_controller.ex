@@ -1,5 +1,9 @@
-defmodule ExGridhookWeb.RootController do
+defmodule ExGridhookWeb.PageController do
   use ExGridhookWeb, :controller
+
+  def home(conn, _params) do
+    render(conn, :home)
+  end
 
   def index(conn, _params) do
     send_resp(conn, 200, "This app handles incoming sendgrid events.")

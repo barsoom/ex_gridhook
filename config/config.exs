@@ -7,16 +7,46 @@ import Config
 
 # General application configuration
 config :ex_gridhook,
-  ecto_repos: [ExGridhook.Repo]
+  ecto_repos: [ExGridhook.Repo],
+    generators: [timestamp_type: :utc_datetime]
+
 
 # Configures the endpoint
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: System.get_env("SECRET_KEY_BASE") || "no secret",
-  pubsub_server: ExGridhook.PubSub
+  adapter: Bandit.PhoenixAdapter,
+  render_errors: [
+    formats: [html: ExGridhookWeb.ErrorHTML, json: ExGridhookWeb.ErrorJSON],
+    layout: false
+  ],
+  pubsub_server: ExGridhook.PubSub,
+  live_view: [signing_salt: "TnPLBOai"]
 
-config :ex_gridhook,
-  revision: {:system, "HEROKU_SLUG_COMMIT", "some revision"}
+# config :myapp, Myapp.Mailer, adapter: Swoosh.Adapters.Local
+
+# Configure esbuild (the version is required)
+config :esbuild,
+  version: "0.25.4",
+  ex_gridhook: [
+    args:
+      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
+  ]
+
+# Configure tailwind (the version is required)
+config :tailwind,
+  version: "4.1.7",
+  ex_gridhook: [
+    args: ~w(
+      --input=assets/css/app.css
+      --output=priv/static/assets/css/app.css
+    ),
+    cd: Path.expand("..", __DIR__)
+  ]
+
+config :ex_gridhook, revision: {:system, "HEROKU_SLUG_COMMIT", "some revision"}
 
 # Configures Elixir's Logger
 config :logger, :console,

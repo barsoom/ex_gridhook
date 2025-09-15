@@ -9,7 +9,9 @@ defmodule ExGridhook.Mixfile do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      compilers: [:phoenix_live_view] ++ Mix.compilers(),
+      listeners: [Phoenix.CodeReloader]
     ]
   end
 
@@ -27,27 +29,46 @@ defmodule ExGridhook.Mixfile do
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
+  def cli do
+    [
+      preferred_envs: [precommit: :test]
+    ]
+  end
+
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
   defp deps do
     [
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
-      {:ecto_sql, ">= 0.0.0"},
-      {:gettext, ">= 0.0.0"},
+      {:ecto_sql, "~> 3.13"},
       {:honeybadger, ">= 0.0.0"},
-      {:jason, ">= 0.0.0"},
-      {:phoenix, "~> 1.7.0"},
-      {:phoenix_ecto, ">= 0.0.0"},
-      {:phoenix_html, ">= 0.0.0"},
-      {:phoenix_live_reload, ">= 0.0.0", only: :dev},
-      {:phoenix_pubsub, ">= 2.0.0"},
-      {:phoenix_view, "~> 2.0"},
-      {:plug_cowboy, ">= 1.0.0"},
+      {:phoenix, "~> 1.8.0"},
+      {:phoenix_ecto, "~> 4.5"},
+      {:phoenix_html, "~> 4.1"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_live_view, "~> 1.1.0"},
+      {:lazy_html, ">= 0.1.0", only: :test},
+      {:phoenix_live_dashboard, "~> 0.8.3"},
       {:postgrex, ">= 0.0.0"},
+      {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
+      {:heroicons,
+       github: "tailwindlabs/heroicons",
+       tag: "v2.2.0",
+       sparse: "optimized",
+       app: false,
+       compile: false,
+       depth: 1},
+      # {:swoosh, "~> 1.16"},
+      {:req, "~> 0.5"},
+      {:telemetry_metrics, "~> 1.0"},
+      {:telemetry_poller, "~> 1.0"},
+      {:gettext, "~> 0.26"},
+      {:jason, "~> 1.2"},
+      {:dns_cluster, "~> 0.2.0"},
+      {:bandit, "~> 1.5"},
       {:yaml_elixir, ">= 0.0.0"},
-      {:phoenix_html_helpers, "~> 1.0"},
-      {:req, "~> 0.3"}
     ]
   end
 
@@ -59,9 +80,18 @@ defmodule ExGridhook.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
+      "assets.build": ["tailwind myapp", "esbuild myapp"],
+      "assets.deploy": [
+        "tailwind myapp --minify",
+        "esbuild myapp --minify",
+        "phx.digest"
+      ],
+      precommit: ["compile --warning-as-errors", "deps.unlock --unused", "format", "test"]
     ]
   end
 end

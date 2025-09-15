@@ -8,10 +8,14 @@ import Config
 # with brunch.io to recompile .js and .css sources.
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   http: [port: System.get_env("PORT") || 4000],
-  debug_errors: true,
-  code_reloader: true,
   check_origin: false,
-  watchers: []
+  code_reloader: true,
+  debug_errors: true,
+  secret_key_base: "41LmIyIK6V9rRQXw6ycjPDTik1jkJy/lIBLPg9Xn1hgRnDNCAQ53zyoeCnH4Sk1i",
+  watchers: [
+    esbuild: {Esbuild, :install_and_run, [:ex_gridhook, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:ex_gridhook, ~w(--watch)]}
+  ]
 
 # ## SSL Support
 #
@@ -32,10 +36,16 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
 # Watch static and templates for browser reloading.
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   live_reload: [
+    web_console_logger: true,
     patterns: [
-      ~r{priv/gettext/.*(po)$}
+      ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/gettext/.*(po)$",
+      ~r"lib/ex_gridhook_web/(?:controllers|live|components|router)/?.*\.(ex|heex)$"
     ]
   ]
+
+  # Enable dev routes for dashboard and mailbox
+config :ex_gridhook, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
@@ -43,6 +53,20 @@ config :logger, :console, format: "[$level] $message\n"
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+# Initialize plugs at runtime for faster development compilation
+config :phoenix, :plug_init_mode, :runtime
+
+config :phoenix_live_view,
+  # Include debug annotations and locations in rendered markup.
+  # Changing this configuration will require mix clean and a full recompile.
+  debug_heex_annotations: true,
+  debug_attributes: true,
+  # Enable helpful, but potentially expensive runtime checks
+  enable_expensive_runtime_checks: true
+
+# # Disable swoosh api client as it is only required for production adapters.
+# config :swoosh, :api_client, false
 
 # Configure your database
 if System.get_env("DEVBOX") do

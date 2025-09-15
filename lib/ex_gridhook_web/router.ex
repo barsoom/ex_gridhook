@@ -1,13 +1,14 @@
 defmodule ExGridhookWeb.Router do
   use ExGridhookWeb, :router
-  use Honeybadger.Plug
+  # use Honeybadger.Plug
 
   pipeline :browser do
-    plug(:accepts, ["html"])
-    plug(:fetch_session)
-    plug(:fetch_flash)
-    plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_live_flash
+    plug :put_root_layout, html: {ExGridhookWeb.Layouts, :root}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
   end
 
   pipeline :api do
@@ -16,15 +17,15 @@ defmodule ExGridhookWeb.Router do
   end
 
   scope "/", ExGridhookWeb do
-    pipe_through(:browser)
+    pipe_through :browser
 
-    get("/", RootController, :index)
-    get("/revision", RootController, :revision)
-    get("/boom", RootController, :boom)
+    get "/", PageController, :home
+    get "/revision", PageController, :revision
+    get "/boom", PageController, :boom
   end
 
   scope "/events", ExGridhookWeb do
-    pipe_through(:api)
+    pipe_through :api
 
     resources("/", EventController, only: [:create])
   end

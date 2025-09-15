@@ -1,4 +1,4 @@
-defmodule ExGridhookWeb.RootControllerTest do
+defmodule ExGridhookWeb.PageControllerTest do
   use ExGridhookWeb.ConnCase
 
   test "GET /" do

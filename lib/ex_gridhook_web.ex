@@ -17,15 +17,83 @@ defmodule ExGridhookWeb do
   and import those modules here.
   """
 
-  def static_paths, do: ~w(css fonts images js favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+
+  def router do
+    quote do
+      use Phoenix.Router, helpers: false
+
+      import Plug.Conn
+      import Phoenix.Controller
+      import Phoenix.LiveView.Router
+      
+      import Plug.BasicAuth
+    end
+  end
+
+  def channel do
+    quote do
+      use Phoenix.Channel
+    end
+  end
+
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: ExGridhookWeb
-      import Plug.Conn
-      import ExGridhookWeb.Router.Helpers
+      use Phoenix.Controller, formats: [:html, :json]
+      
       use Gettext, backend: ExGridhookWeb.Gettext
 
+      import Plug.Conn
+      # import ExGridhookWeb.Router.Helpers
+      unquote(verified_routes())
+    end
+  end
+
+  def live_view do
+    quote do
+      use Phoenix.LiveView
+
+      unquote(html_helpers())
+    end
+  end
+
+  def live_component do
+    quote do
+      use Phoenix.LiveComponent
+
+      unquote(html_helpers())
+    end
+  end
+
+  def html do
+    quote do
+      use Phoenix.Component
+
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [get_csrf_token: 0, view_module: 1, view_template: 1]
+
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
+    end
+  end
+
+  defp html_helpers do
+    quote do
+      # Translation
+      use Gettext, backend: ExGridhookWeb.Gettext
+
+      # HTML escaping functionality
+      import Phoenix.HTML
+      # Core UI components
+      import ExGridhookWeb.CoreComponents
+
+      # Common modules used in templates
+      alias Phoenix.LiveView.JS
+      alias ExGridhookWeb.Layouts
+
+      # Routes generation with the ~p sigil
       unquote(verified_routes())
     end
   end
@@ -36,22 +104,6 @@ defmodule ExGridhookWeb do
         endpoint: ExGridhookWeb.Endpoint,
         router: ExGridhookWeb.Router,
         statics: ExGridhookWeb.static_paths()
-    end
-  end
-
-  def router do
-    quote do
-      use Phoenix.Router
-      import Plug.Conn
-      import Plug.BasicAuth
-      import Phoenix.Controller
-    end
-  end
-
-  def channel do
-    quote do
-      use Phoenix.Channel
-      import ExGridhookWeb.Gettext
     end
   end
 

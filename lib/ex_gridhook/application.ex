@@ -8,14 +8,10 @@ defmodule ExGridhook.Application do
   def start(_type, _args) do
     # Define workers and child supervisors to be supervised
     children = [
-      # Start the pubsub
-      {Phoenix.PubSub, [name: ExGridhook.PubSub, adapter: Phoenix.PubSub.PG2]},
-
-      # Start the Ecto repository
-      {ExGridhook.Repo, []},
-
-      # Start the endpoint when the application starts
-      {ExGridhookWeb.Endpoint, []}
+      ExGridhook.Repo,
+      ExGridhookWeb.Endpoint,
+      {Phoenix.PubSub, name:  ExGridhook.PubSub},
+      
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

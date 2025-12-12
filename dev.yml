@@ -1,7 +1,7 @@
 # Config file used for internal tools at Auctionet
 
 docker_services:
-  postgres:
-    image: "postgres:15.5-alpine" # keep in sync with .circleci/config.yml
-    version: "15.5"
+  postgres: # Keep in sync with .github/workflows/ci.yml
+    image: "postgres:18.1-alpine"
+    version: "18.1"
     options: "-e POSTGRES_PASSWORD=dev --publish 5432 -v $DATABASE_ROOT/ex_gridhook/postgres:/var/lib/postgresql/data"

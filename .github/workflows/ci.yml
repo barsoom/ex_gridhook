@@ -113,6 +113,10 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      actions: write
     if: github.ref_name == github.event.repository.default_branch
     needs:
       - test
@@ -139,6 +143,7 @@ jobs:
             applications/gridhook/values.yaml
             script/ci/update-values.sh
             script/ci/deploy.sh
+            script/ci/wait_for_rollout.sh
             script/ci/ensure_revision_is_newer_than_deployed_revision.sh
 
       - name: Ensure revision is newer than deployed revision
@@ -153,4 +158,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           stack/script/ci/update-values.sh stack/applications/gridhook/values.yaml
-          stack/script/ci/deploy.sh gridhook.auctionet.dev
+          stack/script/ci/deploy.sh
+
+      - name: Wait for rollout
+        run: stack/script/ci/wait_for_rollout.sh stack/applications/gridhook/values.yaml

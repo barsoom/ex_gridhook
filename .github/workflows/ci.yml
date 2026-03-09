@@ -91,7 +91,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ECR_ACCESS_ROLE_ARN }}
       - name: Log into AWS ECR
         if: github.ref_name == github.event.repository.default_branch
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
       - uses: docker/build-push-action@v7

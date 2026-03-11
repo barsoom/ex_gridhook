@@ -138,7 +138,7 @@ jobs:
         with:
           repository: barsoom/stack
           path: stack
-          token: ${{ secrets.STACK_TOKEN }}
+          ssh-key: ${{ secrets.STACK_DEPLOY_KEY }}
           sparse-checkout: |
             applications/gridhook/values.yaml
             script/ci/update-values.sh

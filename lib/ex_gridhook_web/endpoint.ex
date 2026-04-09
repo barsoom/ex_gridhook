@@ -1,6 +1,7 @@
 defmodule ExGridhookWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :ex_gridhook
 
+  socket("/live", Phoenix.LiveView.Socket)
   socket("/socket", ExGridhookWeb.UserSocket)
 
   # Serve at "/" the static files from "priv/static" directory.

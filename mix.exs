@@ -34,13 +34,17 @@ defmodule ExGridhook.Mixfile do
     [
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:ecto_sql, ">= 0.0.0"},
+      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:gettext, ">= 0.0.0"},
       {:honeybadger, ">= 0.0.0"},
       {:jason, ">= 0.0.0"},
+      {:auctionet_single_sign_on_plug, ">= 0.0.0",
+       github: "barsoom/auctionet_single_sign_on_plug"},
       {:phoenix, "~> 1.7.0"},
       {:phoenix_ecto, ">= 0.0.0"},
       {:phoenix_html, ">= 0.0.0"},
       {:phoenix_live_reload, ">= 0.0.0", only: :dev},
+      {:phoenix_live_view, "~> 0.20"},
       {:phoenix_pubsub, ">= 2.0.0"},
       {:phoenix_view, "~> 2.0"},
       {:plug_cowboy, ">= 1.0.0"},
@@ -61,6 +65,7 @@ defmodule ExGridhook.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end

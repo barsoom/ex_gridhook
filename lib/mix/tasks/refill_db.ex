@@ -57,7 +57,7 @@ defmodule Mix.Tasks.RefillDb do
     |> Task.async_stream(
       fn batch_num ->
         {count, _} = Repo.insert_all(Event, build_batch(batch_size, now))
-        EventsData.increment(count)
+        Repo.update_all(EventsData, inc: [total_events: count])
 
         if rem(batch_num, 500) == 0 do
           elapsed = System.monotonic_time(:second) - start

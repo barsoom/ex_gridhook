@@ -12,8 +12,11 @@ config :ex_gridhook,
 # Configures the endpoint
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: System.get_env("SECRET_KEY_BASE") || "no secret",
-  pubsub_server: ExGridhook.PubSub
+  secret_key_base:
+    System.get_env("SECRET_KEY_BASE") ||
+      "dev_secret_key_base_at_least_64_bytes_long_do_not_use_in_production_xxxxxxxxxxx",
+  pubsub_server: ExGridhook.PubSub,
+  live_view: [signing_salt: "gridhook_lv"]
 
 config :ex_gridhook,
   revision: {:system, "HEROKU_SLUG_COMMIT", "some revision"}
@@ -38,6 +41,15 @@ config :honeybadger,
   api_key: System.get_env("HONEYBADGER_API_KEY"),
   origin: System.get_env("HONEYBADGER_ORIGIN", "https://api.honeybadger.io"),
   breadcrumbs_enabled: true
+
+config :esbuild,
+  version: "0.17.11",
+  default: [
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

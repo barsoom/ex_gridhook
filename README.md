@@ -23,6 +23,18 @@ To start your Phoenix server:
 
 Now you can navigate to [`localhost:4000`](http://localhost:4000).
 
+### Filling the database with synthetic data
+
+To populate the database with randomly generated events (useful for load testing or UI development):
+
+    mix refill_db
+
+By default this inserts ~417 million events. Override the defaults:
+
+    mix refill_db --total 100000 --batch-size 1000 --concurrency 4
+
+The task is blocked in production and will raise an error if attempted there.
+
 ## Production
 
 [Phoenix Framework's "Introduction to Deployment" guide](https://hexdocs.pm/phoenix/deployment.html)

@@ -162,10 +162,17 @@ defmodule ExGridhook.Event do
       |> Enum.reject(&(Map.has_key?(&1, "campaign_id") && Map.has_key?(&1, "outbound_id")))
       |> Enum.map(&create_event_data/1)
 
-    Multi.new()
-    |> Multi.insert_all(:events, Event, events)
-    |> Multi.update_all(:events_data, EventsData, inc: [total_events: Enum.count(events)])
-    |> Repo.transaction()
+    result =
+      Multi.new()
+      |> Multi.insert_all(:events, Event, events)
+      |> Multi.update_all(:events_data, EventsData, inc: [total_events: Enum.count(events)])
+      |> Repo.transaction()
+
+    if match?({:ok, _}, result) do
+      Phoenix.PubSub.broadcast(ExGridhook.PubSub, "events", :new_events)
+    end
+
+    result
   end
 
   defp to_date_time(timestamp) do

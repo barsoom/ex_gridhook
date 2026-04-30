@@ -64,6 +64,19 @@
   </div>
 <% end %>
 
+<div class="live-controls">
+  <button phx-click="toggle_freeze" class={"freeze-btn #{if @frozen, do: "frozen"}"}>
+    <%= if @frozen do %>
+      ▶ Resume
+      <%= if @pending_count > 0 do %>
+        <span class="pending-badge"><%= @pending_count %> new</span>
+      <% end %>
+    <% else %>
+      ⏸ Freeze
+    <% end %>
+  </button>
+</div>
+
 <%= if @events != [] do %>
   <p>
     <%= if @page > 1 do %>

@@ -9,12 +9,16 @@ defmodule ExGridhookWeb.EventsLive do
   @per_page 100
 
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Phoenix.PubSub.subscribe(ExGridhook.PubSub, "events")
+
     {:ok,
      assign(socket,
        mailer_actions: Event.mailer_actions(),
        total_count: Event.total_events(),
        newest_time: Event.newest_time(),
-       oldest_time: Event.oldest_time()
+       oldest_time: Event.oldest_time(),
+       frozen: false,
+       pending_count: 0
      )}
   end
 
@@ -25,25 +29,40 @@ defmodule ExGridhookWeb.EventsLive do
     associated_record = clean(params["associated_record"])
     page = max(String.to_integer(params["page"] || "1"), 1)
 
-    events =
-      Event
-      |> Event.with_email_if_present(email)
-      |> Event.with_name_if_present(name)
-      |> Event.with_mailer_action_if_present(mailer_action)
-      |> Event.with_associated_record_if_present(associated_record)
-      |> Event.recent_first()
-      |> Event.paginate(page, @per_page)
-      |> Repo.all()
+    socket =
+      socket
+      |> assign(
+        email: email,
+        name: name,
+        mailer_action: mailer_action,
+        associated_record: associated_record,
+        page: page
+      )
+      |> load_events()
 
-    {:noreply,
-     assign(socket,
-       email: email,
-       name: name,
-       mailer_action: mailer_action,
-       associated_record: associated_record,
-       page: page,
-       events: events
-     )}
+    {:noreply, socket}
+  end
+
+  def handle_info(:new_events, %{assigns: %{frozen: true}} = socket) do
+    {:noreply, update(socket, :pending_count, &(&1 + 1))}
+  end
+
+  def handle_info(:new_events, socket) do
+    {:noreply, reload_stats(socket) |> load_events()}
+  end
+
+  def handle_event("toggle_freeze", _params, socket) do
+    if socket.assigns.frozen do
+      socket =
+        socket
+        |> assign(frozen: false, pending_count: 0)
+        |> reload_stats()
+        |> load_events()
+
+      {:noreply, socket}
+    else
+      {:noreply, assign(socket, frozen: true)}
+    end
   end
 
   def handle_event("filter", params, socket) do
@@ -78,6 +97,36 @@ defmodule ExGridhookWeb.EventsLive do
       |> Map.new()
 
     build_path(merged)
+  end
+
+  defp load_events(socket) do
+    %{
+      email: email,
+      name: name,
+      mailer_action: mailer_action,
+      associated_record: associated_record,
+      page: page
+    } = socket.assigns
+
+    events =
+      Event
+      |> Event.with_email_if_present(email)
+      |> Event.with_name_if_present(name)
+      |> Event.with_mailer_action_if_present(mailer_action)
+      |> Event.with_associated_record_if_present(associated_record)
+      |> Event.recent_first()
+      |> Event.paginate(page, @per_page)
+      |> Repo.all()
+
+    assign(socket, events: events)
+  end
+
+  defp reload_stats(socket) do
+    assign(socket,
+      total_count: Event.total_events(),
+      newest_time: Event.newest_time(),
+      oldest_time: Event.oldest_time()
+    )
   end
 
   defp build_path(params) do

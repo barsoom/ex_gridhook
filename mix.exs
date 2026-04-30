@@ -51,7 +51,8 @@ defmodule ExGridhook.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:yaml_elixir, ">= 0.0.0"},
       {:phoenix_html_helpers, "~> 1.0"},
-      {:req, "~> 0.3"}
+      {:req, "~> 0.3"},
+      {:tzdata, ">= 0.0.0"}
     ]
   end
 

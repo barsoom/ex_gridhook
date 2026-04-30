@@ -94,7 +94,8 @@ defmodule ExGridhookWeb.EventsLive do
   def format_time(nil), do: "-"
 
   def format_time(%DateTime{} = dt) do
-    Calendar.strftime(dt, "%-d %b %Y at %H:%M:%S UTC")
+    {:ok, local_dt} = DateTime.shift_zone(dt, "Europe/Stockholm")
+    Calendar.strftime(local_dt, "%-d %b %Y at %H:%M:%S %z")
   end
 
   def format_number(n) when is_integer(n) do

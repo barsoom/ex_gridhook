@@ -35,6 +35,8 @@ config :ex_gridhook, :basic_auth_config,
 # Configure Phoenix to use it for JSON encoding
 config :phoenix, :json_library, Jason
 
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+
 config :honeybadger,
   # https://github.com/honeybadger-io/honeybadger-elixir#filtering-sensitive-data
   filter: Honeybadger.Filter.Default,

@@ -14,8 +14,8 @@ defmodule ExGridhookWeb.Auth.JwtPlug do
     else
       opts =
         AuctionetSingleSignOnPlug.init(
-          sso_secret_key: secret_key,
-          sso_request_url: Application.get_env(:ex_gridhook, :sso_request_url)
+          sso_secret_key: {:application_env, :ex_gridhook, :sso_secret_key},
+          sso_request_url: {:application_env, :ex_gridhook, :sso_request_url}
         )
 
       AuctionetSingleSignOnPlug.call(conn, opts)

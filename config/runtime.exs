@@ -12,9 +12,19 @@ if config_env() == :prod do
 
   config :logger, level: System.get_env("LOG_LEVEL") || :info
 
+  sso_request_url = System.get_env("SSO_REQUEST_URL")
+
+  sso_base_url =
+    case sso_request_url do
+      nil -> nil
+      url -> uri = URI.parse(url); "#{uri.scheme}://#{uri.host}"
+    end
+
   config :ex_gridhook,
     sso_secret_key: System.get_env("SSO_SECRET_KEY"),
-    sso_request_url: System.get_env("SSO_REQUEST_URL")
+    sso_request_url: sso_request_url,
+    sso_base_url: sso_base_url,
+    env: "production"
 
   # Configure the database
   config :ex_gridhook, ExGridhook.Repo,

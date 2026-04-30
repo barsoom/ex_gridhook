@@ -9,7 +9,18 @@
     <link rel="icon" type="image/x-icon" href={~p"/favicon.ico"} />
   </head>
   <body>
-    <%= Phoenix.HTML.raw(System.get_env("CUSTOM_HTML_HEADER", "")) %>
+    <%= if sso_base_url = Application.get_env(:ex_gridhook, :sso_base_url) do %>
+      <div id="js-auctionet-sso-header"
+        style="height: 42px;"
+        data-name={@current_user && @current_user.name}
+        data-locale={(@current_user && @current_user.locale) || "en"}
+        data-available-locales="en"
+        data-environment={Application.get_env(:ex_gridhook, :env, "production")}
+        data-app-name="gridhook"
+        class={"env-#{Application.get_env(:ex_gridhook, :env, "production")}"}>
+        <script src={"#{sso_base_url}/admin/login/sso_header.js"} async></script>
+      </div>
+    <% end %>
     <%= @inner_content %>
   </body>
 </html>

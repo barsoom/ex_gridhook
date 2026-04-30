@@ -1,6 +1,8 @@
 defmodule ExGridhookWeb.EventsLive do
   use ExGridhookWeb, :live_view
 
+  on_mount ExGridhookWeb.Auth.SsoOnMount
+
   alias ExGridhook.Event
   alias ExGridhook.Repo
 

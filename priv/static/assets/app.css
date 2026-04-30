@@ -133,53 +133,113 @@ body {
 }
 
 .content .events-table {
-  width: 900px;
-  margin: 30px 0;
+  width: 100%;
+  max-width: 960px;
+  margin: 20px 0 30px;
   border-collapse: collapse;
 }
 
 .content .events-table tr.main-data td {
-  border-top: 1px solid #ccc;
-  padding-top: 22px;
+  border-top: 1px solid #e4e6e8;
+  padding: 10px 8px 6px;
+  vertical-align: middle;
 }
 
-.content .events-table tr.extra-data td {
-  vertical-align: top;
-  padding: 15px 0;
+.content .events-table tr.main-data td:first-child {
+  padding-left: 0;
+  width: 20px;
 }
 
-.content .events-table tr.extra-data td.identifier-image {
-  padding-right: 10px;
-}
-
-.content .events-table tr.extra-data td.event-image {
-  padding-left: 10px;
-  text-align: right;
-}
-
-.content .events-table tr.extra-data h4 {
-  margin-bottom: 5px;
-}
-
-.content .events-table tr.extra-data pre.data-block {
-  margin: 5px 0;
-  word-break: break-all;
-  white-space: pre-wrap;
-  font-family: inherit;
-  font-size: inherit;
-}
-
-.content .events-table tr.extra-data pre.data-block:first-child {
-  margin-top: 0;
+.content .events-table td.event-icon img {
+  display: block;
+  opacity: 0.5;
 }
 
 .content .events-table td.email {
-  font-weight: bold;
+  font-weight: 600;
+  width: 220px;
 }
 
 .content .events-table td.event {
+  color: #444;
+}
+
+.content .events-table td.event .mailer-action {
+  font-weight: 600;
+}
+
+.content .events-table td.event .event-sep {
+  color: #bbb;
+  margin: 0 4px;
+}
+
+.content .events-table td.event .event-name {
+  color: #666;
+}
+
+.content .events-table td.happened-at {
   white-space: nowrap;
+  color: #888;
+  font-size: 12px;
   text-align: right;
+  padding-right: 0;
+}
+
+.content .events-table tr.extra-data td {
+  padding: 0 8px 8px;
+  vertical-align: top;
+}
+
+.content .event-details summary {
+  cursor: pointer;
+  color: #aaa;
+  font-size: 11px;
+  user-select: none;
+  list-style: none;
+}
+
+.content .event-details summary::-webkit-details-marker { display: none; }
+
+.content .event-details[open] summary {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.content .event-details-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.content .kv-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 2px;
+}
+
+.content .kv-table {
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.content .kv-table td {
+  padding: 1px 12px 1px 0;
+  vertical-align: top;
+}
+
+.content .kv-table td.kv-key {
+  color: #888;
+  white-space: nowrap;
+  font-weight: 500;
+  min-width: 120px;
+}
+
+.content .kv-table td.kv-val {
+  color: #333;
+  word-break: break-all;
 }
 
 .content .tooltip {

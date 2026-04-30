@@ -89,6 +89,12 @@ defmodule ExGridhookWeb.EventsLive do
   defp clean(""), do: nil
   defp clean(value), do: String.trim(value)
 
+  def has_extra_data?(event) do
+    map_size(event.data || %{}) > 0 or
+      (event.associated_records || []) != [] or
+      map_size(event.unique_args || %{}) > 0
+  end
+
   def filtered?(email, name, mailer_action) do
     Enum.any?([email, name, mailer_action], &(not is_nil(&1)))
   end

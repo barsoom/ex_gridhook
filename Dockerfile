@@ -37,6 +37,9 @@ RUN mix deps.compile
 COPY priv/gettext priv/gettext
 COPY priv/repo priv/repo
 
+RUN mix assets.deploy
+RUN mix release
+
 # Generate revision file
 ARG REVISION
 RUN echo ${REVISION} > /opt/app/built_from_revision

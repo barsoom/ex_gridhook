@@ -11,7 +11,9 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: []
+  watchers: [
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+  ]
 
 # ## SSL Support
 #
@@ -33,7 +35,9 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
 config :ex_gridhook, ExGridhookWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r{priv/gettext/.*(po)$}
+      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      ~r{priv/gettext/.*(po)$},
+      ~r{lib/ex_gridhook_web/(live|components|controllers)/.*(ex|heex)$}
     ]
   ]
 

@@ -1,10 +1,10 @@
 defmodule ExGridhookWeb.RootControllerTest do
   use ExGridhookWeb.ConnCase
 
-  test "GET /" do
+  test "GET / renders the events UI" do
     conn = get(build_conn(), "/")
 
-    assert response(conn, 200) =~ "handles incoming sendgrid events"
+    assert response(conn, 200) =~ "Gridlook"
   end
 
   test "GET /revision without built_from_revision file " do

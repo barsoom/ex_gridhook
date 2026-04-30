@@ -5,9 +5,14 @@ defmodule ExGridhookWeb.Router do
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
-    plug(:fetch_flash)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {ExGridhookWeb.Layouts, :root})
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
+  end
+
+  pipeline :jwt_auth do
+    plug(ExGridhookWeb.Auth.JwtPlug)
   end
 
   pipeline :api do
@@ -16,9 +21,14 @@ defmodule ExGridhookWeb.Router do
   end
 
   scope "/", ExGridhookWeb do
+    pipe_through([:browser, :jwt_auth])
+
+    live("/", EventsLive)
+  end
+
+  scope "/", ExGridhookWeb do
     pipe_through(:browser)
 
-    get("/", RootController, :index)
     get("/revision", RootController, :revision)
     get("/boom", RootController, :boom)
   end
@@ -27,6 +37,14 @@ defmodule ExGridhookWeb.Router do
     pipe_through(:api)
 
     resources("/", EventController, only: [:create])
+  end
+
+  scope "/api/v1", ExGridhookWeb do
+    pipe_through(:api)
+
+    get("/events", ApiController, :events)
+    get("/events/:id", ApiController, :event)
+    delete("/personal_data", ApiController, :remove_personal_data)
   end
 
   defp authenticate_with_basic_auth(conn, _) do

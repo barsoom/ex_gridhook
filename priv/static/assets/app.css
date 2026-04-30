@@ -1,0 +1,143 @@
+body {
+  margin: 0px;
+}
+
+.content {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 13px;
+  padding: 15px 20px;
+  background: #f9f9fa;
+  color: #2d3238;
+}
+
+.content header {
+  margin-bottom: 30px;
+}
+
+.content footer {
+  margin-top: 50px;
+}
+
+.content .main-title {
+  font-size: 35px;
+  margin: 0;
+}
+
+.content .main-title a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.content .stats {
+  margin-top: -10px;
+}
+
+.content .stats .stat {
+  margin: 5px 0;
+}
+
+.content h2 {
+  font-weight: normal;
+}
+
+.content b,
+.content strong,
+.content label {
+  font-weight: 600;
+}
+
+.content .filter-form {
+  margin: 30px 0;
+}
+
+.content .filter-form-email {
+  margin: 0 10px;
+  padding: 3px 5px;
+  width: 20em;
+}
+
+.content .events-table {
+  width: 900px;
+  margin: 30px 0;
+  border-collapse: collapse;
+}
+
+.content .events-table tr.main-data td {
+  border-top: 1px solid #ccc;
+  padding-top: 22px;
+}
+
+.content .events-table tr.extra-data td {
+  vertical-align: top;
+  padding: 15px 0;
+}
+
+.content .events-table tr.extra-data td.identifier-image {
+  padding-right: 10px;
+}
+
+.content .events-table tr.extra-data td.event-image {
+  padding-left: 10px;
+  text-align: right;
+}
+
+.content .events-table tr.extra-data h4 {
+  margin-bottom: 5px;
+}
+
+.content .events-table tr.extra-data pre.data-block {
+  margin: 5px 0;
+  word-break: break-all;
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.content .events-table tr.extra-data pre.data-block:first-child {
+  margin-top: 0;
+}
+
+.content .events-table td.email {
+  font-weight: bold;
+}
+
+.content .events-table td.event {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.content .tooltip {
+  display: inline;
+  position: relative;
+}
+
+.content .tooltip:hover:before {
+  bottom: 26px;
+  color: #000;
+  content: attr(title);
+  padding: 5px 15px;
+  position: absolute;
+  width: 200px;
+  white-space: normal;
+  text-align: left;
+  font-weight: bold;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+.content .help-block {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #404040;
+}
+
+.content .no-more-events {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+img.dinomail {
+  display: block;
+}

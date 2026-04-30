@@ -6,7 +6,7 @@ defmodule ExGridhookWeb do
   This can be used in your application as:
 
       use ExGridhookWeb, :controller
-      use ExGridhookWeb, :view
+      use ExGridhookWeb, :live_view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -17,7 +17,7 @@ defmodule ExGridhookWeb do
   and import those modules here.
   """
 
-  def static_paths, do: ~w(css fonts images js favicon.ico robots.txt)
+  def static_paths, do: ~w(assets events dinomail.gif favicon.ico robots.txt)
 
   def controller do
     quote do
@@ -25,6 +25,45 @@ defmodule ExGridhookWeb do
       import Plug.Conn
       import ExGridhookWeb.Router.Helpers
       use Gettext, backend: ExGridhookWeb.Gettext
+
+      unquote(verified_routes())
+    end
+  end
+
+  def live_view do
+    quote do
+      use Phoenix.LiveView, layout: {ExGridhookWeb.Layouts, :app}
+
+      unquote(html_helpers())
+    end
+  end
+
+  def live_component do
+    quote do
+      use Phoenix.LiveComponent
+
+      unquote(html_helpers())
+    end
+  end
+
+  def html do
+    quote do
+      use Phoenix.Component
+
+      import Phoenix.Controller,
+        only: [get_csrf_token: 0, view_module: 1, view_template: 1]
+
+      unquote(html_helpers())
+    end
+  end
+
+  defp html_helpers do
+    quote do
+      import Phoenix.HTML
+      use PhoenixHTMLHelpers
+
+      import Phoenix.LiveView.Helpers
+      import ExGridhookWeb.CoreComponents
 
       unquote(verified_routes())
     end
@@ -45,6 +84,7 @@ defmodule ExGridhookWeb do
       import Plug.Conn
       import Plug.BasicAuth
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 

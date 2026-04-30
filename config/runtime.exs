@@ -12,6 +12,10 @@ if config_env() == :prod do
 
   config :logger, level: System.get_env("LOG_LEVEL") || :info
 
+  config :ex_gridhook,
+    sso_secret_key: System.get_env("SSO_SECRET_KEY"),
+    sso_request_url: System.get_env("SSO_REQUEST_URL")
+
   # Configure the database
   config :ex_gridhook, ExGridhook.Repo,
     adapter: Ecto.Adapters.Postgres,

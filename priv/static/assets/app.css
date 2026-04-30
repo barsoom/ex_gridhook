@@ -48,13 +48,88 @@ body {
 }
 
 .content .filter-form {
-  margin: 30px 0;
+  margin: 20px 0 30px;
 }
 
-.content .filter-form-email {
-  margin: 0 10px;
-  padding: 3px 5px;
-  width: 20em;
+.content .filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.content .filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.content .filter-field label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #666;
+}
+
+.content .filter-field input,
+.content .filter-field select {
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+}
+
+.content .filter-field input {
+  width: 18em;
+}
+
+.content .active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.content .filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #e8f0fe;
+  border: 1px solid #b8cffe;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: #333;
+}
+
+.content .filter-tag-remove {
+  color: #888;
+  text-decoration: none;
+  font-size: 15px;
+  line-height: 1;
+  margin-left: 2px;
+}
+
+.content .filter-tag-remove:hover {
+  color: #333;
+}
+
+.content .filter-clear-all {
+  font-size: 12px;
+  color: #888;
+  margin-left: 4px;
+}
+
+.content .filter-hint {
+  font-size: 10px;
+  color: #999;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: normal;
+  margin-left: 4px;
 }
 
 .content .events-table {

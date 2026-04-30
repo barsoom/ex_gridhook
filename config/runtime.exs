@@ -16,8 +16,12 @@ if config_env() == :prod do
 
   sso_base_url =
     case sso_request_url do
-      nil -> nil
-      url -> uri = URI.parse(url); "#{uri.scheme}://#{uri.host}"
+      nil ->
+        nil
+
+      url ->
+        uri = URI.parse(url)
+        "#{uri.scheme}://#{uri.host}"
     end
 
   config :ex_gridhook,

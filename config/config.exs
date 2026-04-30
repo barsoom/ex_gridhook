@@ -16,7 +16,8 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
     System.get_env("SECRET_KEY_BASE") ||
       "dev_secret_key_base_at_least_64_bytes_long_do_not_use_in_production_xxxxxxxxxxx",
   pubsub_server: ExGridhook.PubSub,
-  live_view: [signing_salt: "gridhook_lv"]
+  live_view: [signing_salt: "gridhook_lv"],
+  render_errors: [formats: [html: ExGridhookWeb.ErrorHTML], layout: false]
 
 config :ex_gridhook,
   revision: {:system, "HEROKU_SLUG_COMMIT", "some revision"}

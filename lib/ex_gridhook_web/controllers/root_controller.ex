@@ -15,6 +15,11 @@ defmodule ExGridhookWeb.RootController do
     send_resp(conn, 200, revision)
   end
 
+  def sso_callback(conn, _params) do
+    # SSO plug handles the jwt_authentication_token and halts; this is a fallback.
+    redirect(conn, to: "/")
+  end
+
   def boom(_conn, _params) do
     # Used to test error reporting.
     raise "Boom!"

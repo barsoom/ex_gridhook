@@ -24,6 +24,7 @@ defmodule ExGridhookWeb.Router do
     pipe_through([:browser, :jwt_auth])
 
     live("/", EventsLive)
+    get("/login/sso", RootController, :sso_callback)
   end
 
   scope "/", ExGridhookWeb do

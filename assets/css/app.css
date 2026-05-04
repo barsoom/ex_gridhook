@@ -1,13 +1,29 @@
+:root {
+  --font-size-base: 13px;
+  --font-size-sm: 12px;
+  --font-size-xs: 11px;
+
+  --font-weight-semibold: 600;
+
+  --color-text: #2d3238;
+  --color-text-dark: #333;
+  --color-text-muted: #666;
+  --color-text-subtle: #888;
+  --color-border: #ccc;
+
+  --radius: 3px;
+}
+
 body {
   margin: 0px;
 }
 
 .content {
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 13px;
+  font-size: var(--font-size-base);
   padding: 15px 20px;
   background: #f9f9fa;
-  color: #2d3238;
+  color: var(--color-text);
 }
 
 .content header {
@@ -26,7 +42,7 @@ body {
 .content .main-title a {
   color: inherit;
   text-decoration: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .content .stats {
@@ -44,7 +60,7 @@ body {
 .content b,
 .content strong,
 .content label {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .content .filter-form {
@@ -65,18 +81,18 @@ body {
 }
 
 .content .filter-field label {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #666;
+  color: var(--color-text-muted);
 }
 
 .content .filter-field input,
 .content .filter-field select {
   padding: 5px 8px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 13px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: var(--font-size-base);
   font-family: inherit;
   background: #fff;
 }
@@ -99,14 +115,14 @@ body {
   gap: 5px;
   background: #e8f0fe;
   border: 1px solid #b8cffe;
-  border-radius: 3px;
+  border-radius: var(--radius);
   padding: 3px 8px;
-  font-size: 12px;
-  color: #333;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-dark);
 }
 
 .content .filter-tag-remove {
-  color: #888;
+  color: var(--color-text-subtle);
   text-decoration: none;
   font-size: 15px;
   line-height: 1;
@@ -114,12 +130,12 @@ body {
 }
 
 .content .filter-tag-remove:hover {
-  color: #333;
+  color: var(--color-text-dark);
 }
 
 .content .filter-clear-all {
-  font-size: 12px;
-  color: #888;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-subtle);
   margin-left: 4px;
 }
 
@@ -140,11 +156,11 @@ body {
 }
 
 .content .freeze-btn {
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   font-family: inherit;
   padding: 4px 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
   background: #fff;
   cursor: pointer;
   color: #555;
@@ -166,10 +182,10 @@ body {
 .content .pending-badge {
   background: #f0a500;
   color: #fff;
-  border-radius: 3px;
+  border-radius: var(--radius);
   padding: 1px 6px;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
 }
 
 .content .events-table {
@@ -196,7 +212,7 @@ body {
 }
 
 .content .events-table td.email {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   width: 220px;
 }
 
@@ -205,7 +221,7 @@ body {
 }
 
 .content .events-table td.event .mailer-action {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .content .events-table td.event .event-sep {
@@ -214,13 +230,13 @@ body {
 }
 
 .content .events-table td.event .event-name {
-  color: #666;
+  color: var(--color-text-muted);
 }
 
 .content .events-table td.happened-at {
   white-space: nowrap;
-  color: #888;
-  font-size: 12px;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
   text-align: right;
   padding-right: 0;
 }
@@ -233,7 +249,7 @@ body {
 .content .event-details summary {
   cursor: pointer;
   color: #aaa;
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   user-select: none;
   list-style: none;
 }
@@ -241,7 +257,7 @@ body {
 .content .event-details summary::-webkit-details-marker { display: none; }
 
 .content .event-details[open] summary {
-  color: #666;
+  color: var(--color-text-muted);
   margin-bottom: 8px;
 }
 
@@ -252,9 +268,9 @@ body {
 }
 
 .content .kv-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #888;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-subtle);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 0 0 2px;
@@ -262,7 +278,7 @@ body {
 
 .content .kv-table {
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: var(--font-size-sm);
 }
 
 .content .kv-table td {
@@ -271,14 +287,14 @@ body {
 }
 
 .content .kv-table td.kv-key {
-  color: #888;
+  color: var(--color-text-subtle);
   white-space: nowrap;
   font-weight: 500;
   min-width: 120px;
 }
 
 .content .kv-table td.kv-val {
-  color: #333;
+  color: var(--color-text-dark);
   word-break: break-all;
 }
 
@@ -298,7 +314,7 @@ body {
   text-align: left;
   font-weight: bold;
   background: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border);
 }
 
 .content .help-block {

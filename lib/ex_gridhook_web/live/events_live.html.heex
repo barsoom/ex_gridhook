@@ -116,7 +116,7 @@
         <tr class="extra-data">
           <td></td>
           <td colspan="3">
-            <details class="event-details">
+            <details id={"event-details-#{event.id}"} phx-update="ignore" class="event-details">
               <summary>details</summary>
               <div class="event-details-body">
                 <%= if Map.has_key?(event.unique_args || %{}, "outbound_id") do %>

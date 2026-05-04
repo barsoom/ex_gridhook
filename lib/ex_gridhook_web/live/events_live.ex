@@ -17,7 +17,7 @@ defmodule ExGridhookWeb.EventsLive do
        total_count: Event.total_events(),
        newest_time: Event.newest_time(),
        oldest_time: Event.oldest_time(),
-       frozen: false,
+       live_list: false,
        pending_count: 0
      )}
   end
@@ -43,25 +43,26 @@ defmodule ExGridhookWeb.EventsLive do
     {:noreply, socket}
   end
 
-  def handle_info(:new_events, %{assigns: %{frozen: true}} = socket) do
-    {:noreply, update(socket, :pending_count, &(&1 + 1))}
-  end
-
   def handle_info(:new_events, socket) do
-    {:noreply, reload_stats(socket) |> load_events()}
+    socket = reload_stats(socket)
+
+    if socket.assigns.live_list do
+      {:noreply, assign(socket, pending_count: 0) |> load_events()}
+    else
+      {:noreply, update(socket, :pending_count, &(&1 + 1))}
+    end
   end
 
-  def handle_event("toggle_freeze", _params, socket) do
-    if socket.assigns.frozen do
+  def handle_event("toggle_live_list", _params, socket) do
+    if socket.assigns.live_list do
+      {:noreply, assign(socket, live_list: false)}
+    else
       socket =
         socket
-        |> assign(frozen: false, pending_count: 0)
-        |> reload_stats()
+        |> assign(live_list: true, pending_count: 0)
         |> load_events()
 
       {:noreply, socket}
-    else
-      {:noreply, assign(socket, frozen: true)}
     end
   end
 

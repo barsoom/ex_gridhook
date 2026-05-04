@@ -157,10 +157,10 @@ body {
   background: #f4f4f4;
 }
 
-.content .freeze-btn.frozen {
-  border-color: #f0a500;
-  color: #c07800;
-  background: #fffbf0;
+.content .freeze-btn.live {
+  border-color: #3a8f3a;
+  color: #2a6e2a;
+  background: #f0faf0;
 }
 
 .content .pending-badge {

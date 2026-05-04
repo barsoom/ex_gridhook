@@ -1,7 +1,6 @@
 defmodule ExGridhookWeb.Auth.SsoOnMount do
   @moduledoc false
 
-  import Phoenix.LiveView, only: [attach_hook: 4]
 
   def on_mount(:default, _params, session, socket) do
     sso_employee_id = session["sso_employee_id"]

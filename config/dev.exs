@@ -12,7 +12,8 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    esbuild_css: {Esbuild, :install_and_run, [:css, ~w(--watch)]}
   ]
 
 # ## SSL Support

@@ -1,0 +1,318 @@
+body {
+  margin: 0px;
+}
+
+.content {
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 13px;
+  padding: 15px 20px;
+  background: #f9f9fa;
+  color: #2d3238;
+}
+
+.content header {
+  margin-bottom: 30px;
+}
+
+.content footer {
+  margin-top: 50px;
+}
+
+.content .main-title {
+  font-size: 35px;
+  margin: 0;
+}
+
+.content .main-title a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.content .stats {
+  margin-top: -10px;
+}
+
+.content .stats .stat {
+  margin: 5px 0;
+}
+
+.content h2 {
+  font-weight: normal;
+}
+
+.content b,
+.content strong,
+.content label {
+  font-weight: 600;
+}
+
+.content .filter-form {
+  margin: 20px 0 30px;
+}
+
+.content .filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.content .filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.content .filter-field label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #666;
+}
+
+.content .filter-field input,
+.content .filter-field select {
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+}
+
+.content .filter-field input {
+  width: 18em;
+}
+
+.content .active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.content .filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #e8f0fe;
+  border: 1px solid #b8cffe;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: #333;
+}
+
+.content .filter-tag-remove {
+  color: #888;
+  text-decoration: none;
+  font-size: 15px;
+  line-height: 1;
+  margin-left: 2px;
+}
+
+.content .filter-tag-remove:hover {
+  color: #333;
+}
+
+.content .filter-clear-all {
+  font-size: 12px;
+  color: #888;
+  margin-left: 4px;
+}
+
+.content .filter-hint {
+  font-size: 10px;
+  color: #999;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: normal;
+  margin-left: 4px;
+}
+
+.content .live-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.content .freeze-btn {
+  font-size: 12px;
+  font-family: inherit;
+  padding: 4px 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+  color: #555;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.content .freeze-btn:hover {
+  background: #f4f4f4;
+}
+
+.content .freeze-btn.live {
+  border-color: #3a8f3a;
+  color: #2a6e2a;
+  background: #f0faf0;
+}
+
+.content .pending-badge {
+  background: #f0a500;
+  color: #fff;
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.content .events-table {
+  width: 100%;
+  max-width: 960px;
+  margin: 20px 0 30px;
+  border-collapse: collapse;
+}
+
+.content .events-table tr.main-data td {
+  border-top: 1px solid #e4e6e8;
+  padding: 10px 8px 6px;
+  vertical-align: middle;
+}
+
+.content .events-table tr.main-data td:first-child {
+  padding-left: 0;
+  width: 20px;
+}
+
+.content .events-table td.event-icon img {
+  display: block;
+  opacity: 0.5;
+}
+
+.content .events-table td.email {
+  font-weight: 600;
+  width: 220px;
+}
+
+.content .events-table td.event {
+  color: #444;
+}
+
+.content .events-table td.event .mailer-action {
+  font-weight: 600;
+}
+
+.content .events-table td.event .event-sep {
+  color: #bbb;
+  margin: 0 4px;
+}
+
+.content .events-table td.event .event-name {
+  color: #666;
+}
+
+.content .events-table td.happened-at {
+  white-space: nowrap;
+  color: #888;
+  font-size: 12px;
+  text-align: right;
+  padding-right: 0;
+}
+
+.content .events-table tr.extra-data td {
+  padding: 0 8px 8px;
+  vertical-align: top;
+}
+
+.content .event-details summary {
+  cursor: pointer;
+  color: #aaa;
+  font-size: 11px;
+  user-select: none;
+  list-style: none;
+}
+
+.content .event-details summary::-webkit-details-marker { display: none; }
+
+.content .event-details[open] summary {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.content .event-details-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.content .kv-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 2px;
+}
+
+.content .kv-table {
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.content .kv-table td {
+  padding: 1px 12px 1px 0;
+  vertical-align: top;
+}
+
+.content .kv-table td.kv-key {
+  color: #888;
+  white-space: nowrap;
+  font-weight: 500;
+  min-width: 120px;
+}
+
+.content .kv-table td.kv-val {
+  color: #333;
+  word-break: break-all;
+}
+
+.content .tooltip {
+  display: inline;
+  position: relative;
+}
+
+.content .tooltip:hover:before {
+  bottom: 26px;
+  color: #000;
+  content: attr(title);
+  padding: 5px 15px;
+  position: absolute;
+  width: 200px;
+  white-space: normal;
+  text-align: left;
+  font-weight: bold;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+.content .help-block {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #404040;
+}
+
+.content .no-more-events {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+img.dinomail {
+  display: block;
+}

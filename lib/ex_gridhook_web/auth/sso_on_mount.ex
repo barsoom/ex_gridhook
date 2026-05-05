@@ -1,7 +1,6 @@
 defmodule ExGridhookWeb.Auth.SsoOnMount do
   @moduledoc false
 
-
   def on_mount(:default, _params, session, socket) do
     sso_employee_id = session["sso_employee_id"]
 

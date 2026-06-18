@@ -20,8 +20,6 @@ defmodule ExGridhookWeb.EventControllerTest do
     # Make sure these are serialised/deserialised correctly.
     event = Repo.first(Event)
     assert event.associated_records == ["Item:123", "Item:456"]
-
-    Application.delete_env(:ex_gridhook, :basic_auth_config)
   end
 
   defp sendgrid_webhook_payload do

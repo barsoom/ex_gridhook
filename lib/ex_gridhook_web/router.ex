@@ -45,7 +45,7 @@ defmodule ExGridhookWeb.Router do
 
     get("/events", ApiController, :events)
     get("/events/:id", ApiController, :event)
-    delete("/personal_data", ApiController, :remove_personal_data)
+    post("/personal_data/remove", ApiController, :remove_personal_data)
   end
 
   defp authenticate_with_basic_auth(conn, _) do

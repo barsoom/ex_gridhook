@@ -130,8 +130,8 @@ defmodule ExGridhookWeb.EventsLive do
       map_size(event.unique_args || %{}) > 0
   end
 
-  def filtered?(email, name, mailer_action) do
-    Enum.any?([email, name, mailer_action], &(not is_nil(&1)))
+  def filtered?(email, name, mailer_action, associated_record) do
+    Enum.any?([email, name, mailer_action, associated_record], &(not is_nil(&1)))
   end
 
   def format_time(nil), do: "-"

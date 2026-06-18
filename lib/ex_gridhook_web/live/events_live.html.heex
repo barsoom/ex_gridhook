@@ -40,7 +40,7 @@
   </div>
 </form>
 
-<%= if filtered?(@email, @name, @mailer_action) do %>
+<%= if filtered?(@email, @name, @mailer_action, @associated_record) do %>
   <div class="active-filters">
     <%= if @email do %>
       <span class="filter-tag">
@@ -58,6 +58,12 @@
       <span class="filter-tag">
         Mailer: <b><%= @mailer_action %></b>
         <.link patch={filter_path(assigns, mailer_action: nil, page: nil)} class="filter-tag-remove" title="Remove">×</.link>
+      </span>
+    <% end %>
+    <%= if @associated_record do %>
+      <span class="filter-tag">
+        Associated record: <b><%= @associated_record %></b>
+        <.link patch={filter_path(assigns, associated_record: nil, page: nil)} class="filter-tag-remove" title="Remove">×</.link>
       </span>
     <% end %>
     <.link patch="/" class="filter-clear-all">Clear all</.link>

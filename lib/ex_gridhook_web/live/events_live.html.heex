@@ -65,14 +65,10 @@
 <% end %>
 
 <div class="live-controls">
-  <button phx-click="toggle_live_list" class={"freeze-btn #{if @live_list, do: "live"}"}>
-    <%= if @live_list do %>
-      ⏸ Pause list
-    <% else %>
-      ▶ Live list
-      <%= if @pending_count > 0 do %>
-        <span class="pending-badge"><%= @pending_count %> new</span>
-      <% end %>
+  <button phx-click="refresh" class={"freeze-btn #{if @pending_count > 0, do: "live"}"}>
+    ↻ Refresh
+    <%= if @pending_count > 0 do %>
+      <span class="pending-badge"><%= @pending_count %> new</span>
     <% end %>
   </button>
 </div>

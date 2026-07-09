@@ -9,7 +9,7 @@ defmodule ExGridhook.Application do
     Logger.add_handlers(:ex_gridhook)
     :opentelemetry_cowboy.setup()
     OpentelemetryPhoenix.setup(adapter: :cowboy2)
-    OpentelemetryEcto.setup([:ex_gridhook, :repo])
+    OpentelemetryEcto.setup([:ex_gridhook, :repo], db_statement: :enabled)
 
     # Define workers and child supervisors to be supervised
     children = [

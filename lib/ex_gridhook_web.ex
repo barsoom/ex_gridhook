@@ -34,6 +34,8 @@ defmodule ExGridhookWeb do
     quote do
       use Phoenix.LiveView, layout: {ExGridhookWeb.Layouts, :app}
 
+      on_mount Sentry.LiveViewHook
+
       unquote(html_helpers())
     end
   end

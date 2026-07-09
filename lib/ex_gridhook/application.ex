@@ -6,6 +6,11 @@ defmodule ExGridhook.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
+    Logger.add_handlers(:ex_gridhook)
+    :opentelemetry_cowboy.setup()
+    OpentelemetryPhoenix.setup(adapter: :cowboy2)
+    OpentelemetryEcto.setup([:ex_gridhook, :repo])
+
     # Define workers and child supervisors to be supervised
     children = [
       # Start the pubsub

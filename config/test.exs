@@ -9,6 +9,8 @@ config :ex_gridhook, ExGridhookWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warning
 
+config :sentry, dsn: nil
+
 devbox_port =
   if System.get_env("DEVBOX") do
     System.cmd("service_port", ["postgres"]) |> elem(0) |> String.trim()

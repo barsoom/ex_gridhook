@@ -8,6 +8,11 @@ defmodule ExGridhook.Mixfile do
       elixir: ">= 0.0.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
+      releases: [
+        ex_gridhook: [
+          applications: [opentelemetry: :temporary]
+        ]
+      ],
       aliases: aliases(),
       deps: deps()
     ]
@@ -40,6 +45,12 @@ defmodule ExGridhook.Mixfile do
       {:jason, ">= 0.0.0"},
       {:auctionet_single_sign_on_plug, ">= 0.0.0",
        github: "barsoom/auctionet_single_sign_on_plug"},
+      {:opentelemetry, "~> 1.5"},
+      {:opentelemetry_api, "~> 1.4"},
+      {:opentelemetry_cowboy, "~> 1.0"},
+      {:opentelemetry_ecto, "~> 1.2"},
+      {:opentelemetry_exporter, "~> 1.0"},
+      {:opentelemetry_phoenix, "~> 2.0"},
       {:phoenix, "~> 1.7.0"},
       {:phoenix_ecto, ">= 0.0.0"},
       {:phoenix_html, ">= 0.0.0"},
@@ -52,6 +63,7 @@ defmodule ExGridhook.Mixfile do
       {:yaml_elixir, ">= 0.0.0"},
       {:phoenix_html_helpers, "~> 1.0"},
       {:req, "~> 0.3"},
+      {:sentry, "~> 13.3"},
       {:tzdata, ">= 0.0.0"}
     ]
   end

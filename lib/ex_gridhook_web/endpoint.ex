@@ -1,4 +1,5 @@
 defmodule ExGridhookWeb.Endpoint do
+  use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :ex_gridhook
 
   socket("/live", Phoenix.LiveView.Socket)
@@ -24,7 +25,7 @@ defmodule ExGridhookWeb.Endpoint do
   end
 
   plug(Plug.RequestId)
-  plug(Plug.Logger)
+  plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
 
   plug(Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
@@ -32,6 +33,7 @@ defmodule ExGridhookWeb.Endpoint do
     json_decoder: Jason
   )
 
+  plug(Sentry.PlugContext)
   plug(Plug.MethodOverride)
   plug(Plug.Head)
 

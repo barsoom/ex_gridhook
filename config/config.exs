@@ -45,6 +45,15 @@ config :honeybadger,
   origin: System.get_env("HONEYBADGER_ORIGIN", "https://api.honeybadger.io"),
   breadcrumbs_enabled: true
 
+config :sentry,
+  enable_source_code_context: true,
+  root_source_code_paths: [File.cwd!()],
+  traces_sampler: &ExGridhook.SentrySampler.sample/1
+
+config :opentelemetry,
+  span_processor: {Sentry.OpenTelemetry.SpanProcessor, []},
+  sampler: {Sentry.OpenTelemetry.Sampler, []}
+
 config :esbuild,
   version: "0.17.11",
   default: [

@@ -12,6 +12,13 @@ if config_env() == :prod do
 
   config :logger, level: System.get_env("LOG_LEVEL") || :info
 
+  if System.get_env("SENTRY_DSN") do
+    config :ex_gridhook, :logger, [
+      {:handler, :ex_gridhook_sentry_log_handler, Sentry.LoggerHandler,
+       %{config: %{metadata: :all}}}
+    ]
+  end
+
   sso_request_url = System.get_env("SSO_REQUEST_URL")
 
   sso_base_url =

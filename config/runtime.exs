@@ -12,13 +12,6 @@ if config_env() == :prod do
 
   config :logger, level: System.get_env("LOG_LEVEL") || :info
 
-  if System.get_env("SENTRY_DSN") do
-    config :ex_gridhook, :logger, [
-      {:handler, :ex_gridhook_sentry_log_handler, Sentry.LoggerHandler,
-       %{config: %{metadata: :all}}}
-    ]
-  end
-
   sso_request_url = System.get_env("SSO_REQUEST_URL")
 
   sso_base_url =
@@ -45,4 +38,19 @@ if config_env() == :prod do
     ssl: true,
     ssl_opts: [verify: :verify_none],
     prepare: :unnamed
+end
+
+if config_env() != :test do
+  sentry_dsn = System.get_env("SENTRY_DSN")
+
+  if sentry_dsn do
+    config :ex_gridhook, :logger, [
+      {:handler, :ex_gridhook_sentry_log_handler, Sentry.LoggerHandler,
+       %{config: %{metadata: :all}}}
+    ]
+  end
+
+  config :sentry,
+    dsn: sentry_dsn,
+    environment_name: System.get_env("SENTRY_ENVIRONMENT", Atom.to_string(config_env()))
 end

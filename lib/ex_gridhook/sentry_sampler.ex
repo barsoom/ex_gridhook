@@ -6,6 +6,13 @@ defmodule ExGridhook.SentrySampler do
     case attributes[:"url.path"] do
       "/revision" -> 0.0
       "/events" -> 0.01
+      _ -> parent_decision()
+    end
+  end
+
+  defp parent_decision do
+    case :otel_ctx.get_value(:"sentry-trace", :undefined) do
+      {_trace_id, _span_id, sampled} -> if sampled, do: 1.0, else: 0.0
       _ -> 1.0
     end
   end

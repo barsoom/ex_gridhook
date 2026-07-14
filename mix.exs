@@ -38,6 +38,7 @@ defmodule ExGridhook.Mixfile do
   defp deps do
     [
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:dotenv_parser, "~> 2.0", only: :dev},
       {:ecto_sql, ">= 0.0.0"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:gettext, ">= 0.0.0"},

@@ -1,5 +1,7 @@
 import Config
 
+if config_env() == :dev and File.exists?(".env"), do: DotenvParser.load_file(".env")
+
 if config_env() == :prod do
   port = System.get_env("PORT") || raise "expected the PORT environment variable to be set"
 
